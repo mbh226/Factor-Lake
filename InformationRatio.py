@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 
-file_path = '/content/drive/My Drive/Cayuga Fund Factor Lake/FR2000AnnualQuantDataFORRETURNSIMULATION.xlsx'
+file_path = '/content/drive/My Drive/Cayuga Fund Factor Lake/FR2000 Annual Quant Data FOR RETURN SIMULATION.xlsx'
 
 # Read data sheets
 data = pd.read_excel(file_path, sheet_name='Data', header=2)
