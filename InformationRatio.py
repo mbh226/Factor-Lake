@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
 from scipy import stats
+from google.colab import drive
+
+"""Mount Google Drive"""
+drive.mount('/content/drive')
 
 file_path = '/content/drive/My Drive/Cayuga Fund Factor Lake/FR2000 Annual Quant Data FOR RETURN SIMULATION.xlsx'
 
@@ -28,7 +32,7 @@ factors = {
 }
 
 # Display numbered factors
-print("\nAvailable factors:")
+print("Available factors:")
 for num, factor in factors.items():
     print(f"{num}: {factor}")
 
