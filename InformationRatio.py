@@ -141,7 +141,7 @@ mean_active_return = np.mean(active_returns)
 tracking_error = np.std(active_returns)
 
 information_ratio = mean_active_return / tracking_error
-print("\n Information Ratio Details")
+print("\nInformation Ratio Details")
 print(f"Portfolio active return: {mean_active_return}")
 print(f"Portfolio tracking error: {tracking_error}")
 print(f"Portfolio Information Ratio: {information_ratio}")
