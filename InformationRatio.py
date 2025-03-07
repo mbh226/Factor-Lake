@@ -101,7 +101,7 @@ for year in range(2002, 2023):
     portfolios_return[year] = (stocks_return * weight_data[year]).sum()
 
 for year in range(2002, 2023):
-    print(f"Year {year}: Portfolio Return = {portfolios_return[year]}")
+    print(f"\nYear {year}: Portfolio Return = {portfolios_return[year]}")
 
 # calculate benchmark returns
 
@@ -125,7 +125,7 @@ for year in range(2003, 2023):
 
 # print the benchmark returns for each year
 for year in range(2003, 2023):
-    print(f"Year {year}: Benchmark Return = {benchmark_returns[year]}")
+    print(f"\nYear {year}: Benchmark Return = {benchmark_returns[year]}")
 
 # calculate information ratio
 
