@@ -1,15 +1,3 @@
-import pandas as pd
-import numpy as np
-from scipy import stats
-from google.colab import drive
-from google.colab import files
-
-# Set up environment
-drive.mount('/content/drive')
-
-# Load data
-file_path = '/content/drive/My Drive/SYSEN5900 Quant Finance | FALL24/FR2000AnnualQuantDataFORRETURNSIMULATION.xlsx'
-
 # Read data sheets
 data = pd.read_excel(file_path, sheet_name='Data', header=2)
 
