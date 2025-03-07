@@ -28,7 +28,7 @@ factors = {
 }
 
 # Display numbered factors
-print("Available factors:")
+print("\nAvailable factors:")
 for num, factor in factors.items():
     print(f"{num}: {factor}")
 
@@ -131,16 +131,17 @@ for year in range(2003, 2023):
 
 # calculate information ratio
 
-excess_returns = []
+active_returns = []
 for year in range(2003, 2023):
-    excess_return = portfolios_return[year] - benchmark_returns[year]
+    active_return = portfolios_return[year] - benchmark_returns[year]
 
-    excess_returns.append(excess_return)
+    active_returns.append(active_return)
 
-mean_excess_return = np.mean(excess_returns)
-tracking_error = np.std(excess_returns)
+mean_active_return = np.mean(active_returns)
+tracking_error = np.std(active_returns)
 
-information_ratio = mean_excess_return / tracking_error
-print(f"Portfolio excess return: {mean_excess_return}")
+information_ratio = mean_active_return / tracking_error
+print("\n Information Ratio Details")
+print(f"Portfolio active return: {mean_active_return}")
 print(f"Portfolio tracking error: {tracking_error}")
 print(f"Portfolio Information Ratio: {information_ratio}")
