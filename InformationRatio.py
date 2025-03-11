@@ -68,12 +68,13 @@ weights = np.ones(len(factor_set)) / len(factor_set)
 
 # Calculate the weighted sum of factors
 data['Portfolio'] = data[factor_set].dot(weights)
+
 data = data.dropna(subset=['Portfolio'])
 portfolio = data[['Security Name', 'Date', 'Portfolio']]
 
 #Sorts Portfolio weights by year and gives the average portfolio weight for a given year
 data['Year'] = pd.to_datetime(data['Date']).dt.year
-data['Yearly Portfolio'] = data.groupby('Year')['Portfolio'].transform('mean')
+data['Yearly Portfolio'] = data.groupby('Year')['Portfolio'].transform('sum')
 yearly_portfolio = data[['Year', 'Yearly Portfolio']].drop_duplicates()
 
 # Display the constructed portfolio weights
@@ -119,7 +120,6 @@ benchmark_returns = {}
 for year in range(2002, 2023):
     # calculate stock returns for the current year using benchmark_price_data
     benchmark_stocks_return = (benchmark_price_data[year + 1] - benchmark_price_data[year]) / benchmark_price_data[year]
-
     # calculate weighted benchmark for loop's current year
     weighted_benchmark = ((benchmark_stocks_return * benchmark_weight_data[year]).sum())
     benchmark_returns[year] = weighted_benchmark
@@ -139,7 +139,6 @@ for year in range(2002, 2023):
 
 mean_active_return = np.mean(active_returns)
 tracking_error = np.std(active_returns)
-
 information_ratio = mean_active_return / tracking_error
 print("\nInformation Ratio Details")
 print(f"Portfolio active return: {mean_active_return}")
