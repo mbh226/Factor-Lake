@@ -132,7 +132,7 @@ for year in range(2002, 2023):
 # calculate information ratio
 
 active_returns = []
-for year in range(2003, 2023):
+for year in range(2002, 2023):
     active_return = portfolios_return[year] - benchmark_returns[year]
 
     active_returns.append(active_return)
