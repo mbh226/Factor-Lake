@@ -116,7 +116,7 @@ benchmark_weight_data.columns.name = None
 
 
 benchmark_returns = {}
-for year in range(2003, 2023):
+for year in range(2002, 2023):
     # calculate stock returns for the current year using benchmark_price_data
     benchmark_stocks_return = (benchmark_price_data[year + 1] - benchmark_price_data[year]) / benchmark_price_data[year]
 
@@ -126,7 +126,7 @@ for year in range(2003, 2023):
 
 # print the benchmark returns for each year
 print("\nYearly Benchmark Returns")
-for year in range(2003, 2023):
+for year in range(2002, 2023):
     print(f"Year {year}: Benchmark Return = {benchmark_returns[year]}")
 
 # calculate information ratio
