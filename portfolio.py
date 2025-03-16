@@ -36,15 +36,19 @@ class Portfolio:
     def calculate_return(self, t1_value, t2_value):
         return (t2_value - t1_value) / t1_value * 100
 
+### USING PORTFOLIO WITH MARKET OBJECT ###
+data = rdata.copy()
+data['Ticker'] = data['Ticker-Region'].dropna().apply(lambda x: x[0:x.find('-')])
+data['Year'] = pd.to_datetime(data['Date']).dt.year
+data = data[['Ticker', 'Ending Price', 'Year']]
+
+marketObject_2002 = MarketObject(data.loc[data['Year'] == 2002], 2002)
+marketObject_2003 = MarketObject(data.loc[data['Year'] == 2003], 2003)
+
 ### EXAMPLE USING PORTFOLIO CLASS ###
 portfolio = Portfolio('FACTOR LAKE PORTFOLIO')
-
-portfolio.add_investment("AAPL", 50)
-portfolio.add_investment("GOOG", 20)
-
-### MARKET DATA ###
-t1_price = Market({"AAPL": 150, "GOOG": 2700})
-t2_price = Market({"AAPL": 160, "GOOG": 2800})
+portfolio.add_investment("AOS", 50)
+portfolio.add_investment("AAPL", 10)
 
 ## PORTFOLIO VALUE CALCULATION ###
 value_t1 = portfolio.present_value(t1_price)
@@ -52,6 +56,6 @@ value_t2 = portfolio.present_value(t2_price)
 
 factor_lake_return = portfolio.calculate_return(value_t1,value_t2)
 
-print(f'Portfolio Value at T1: ${value_t1:.2f}')
-print(f'Portfolio Value at T2: ${value_t2:.2f}')
-print(f'Portfolio Return: {factor_lake_return:.2f}%')
+print(f'Portfolio Value in 2002: ${value_t1:.2f}')
+print(f'Portfolio Value in 2003: ${value_t2:.2f}')
+print(f'Portfolio Return from 2002 to 2003: {factor_lake_return:.2f}%')
