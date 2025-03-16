@@ -41,7 +41,7 @@ class Portfolio:
         return total_value
 
     def calculate_return(self, t1_value, t2_value):
-        if t1 !=0:
+        if t1_value !=0:
             return (t2_value - t1_value) / t1_value * 100
         else:
             raise ValueError("Value at time 1 is 0")
