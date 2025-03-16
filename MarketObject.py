@@ -23,11 +23,15 @@ class MarketObject():
         self.t = t
 
     def getPrice(self, ticker):
-        try:
-            return self.stocks.loc[self.stocks['Ticker'] == ticker]['Ending Price'].iloc[-1]
-        except KeyError:
-            print('Ticker ' + ticker + ' is not in the market data')
+        ticker_data = self.stocks.loc[self.stocks['Ticker'] == ticker]
+
+        #check to see if results are empty - molly
+        if ticker_data.empty:
+            print(f"Ticker {ticker} is not found in the market data for {self.t}")
             return None
+
+        #if the data exists, return the last row's ending price - molly 
+        return ticker_data['Ending Price'].iloc[-1]
 
 ### MOVED THIS TO PORTFOLIO.PY ###
 #data = rdata.copy()
