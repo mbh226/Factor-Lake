@@ -29,8 +29,8 @@ class Portfolio:
     def present_value(self, market):
         total_value = 0
         for inv in self.investments:
-            ### HYPOTHETICAL GET_PRICE METHOD FROM MARKET CLASS FOR EACH STOCK ###
-            price = market.get_price(inv["ticker"])
+            ### HYPOTHETICAL GETPRICE METHOD FROM MARKET CLASS FOR EACH STOCK ###
+            price = market.getPrice(inv["ticker"])
             total_value += price * inv["number_of_shares"]
         return total_value
 
