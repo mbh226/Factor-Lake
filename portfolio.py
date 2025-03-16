@@ -55,8 +55,8 @@ portfolio.add_investment("AOS", 50)
 portfolio.add_investment("AAPL", 10)
 
 ## PORTFOLIO VALUE CALCULATION ###
-value_t1 = portfolio.present_value(marketObject_2002) #changed t1_price to marketObject_2002
-value_t2 = portfolio.present_value(marketObject_2003)#changed t2_price to marketObject_2003
+value_t1 = portfolio.present_value(marketObject_2002)
+value_t2 = portfolio.present_value(marketObject_2003)
 
 factor_lake_return = portfolio.calculate_return(value_t1,value_t2)
 
