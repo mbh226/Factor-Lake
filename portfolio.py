@@ -28,16 +28,15 @@ class Portfolio:
     ### CALCULATE PORTFOLIO VALUE ###
     def present_value(self, market):
         total_value = 0
+        print(f'Portfolio values for {market.t}:')
         for inv in self.investments:
-            ### HYPOTHETICAL GETPRICE METHOD FROM MARKET CLASS FOR EACH STOCK ###
-            price = market.getPrice(inv["ticker"])
-
-            #if ticket is not in dataset for that year
-            if price is None:
-                print(f"Skipping investment for {inv['ticker']} due to missing data.")
-                continue
-                
-            total_value += price * inv["number_of_shares"]
+            price = market.getPrice(inv['ticker'])
+            if price is not None:
+                stock_value = price * inv['number_of_shares']
+                total_value += stock_value
+                print(f'\n{inv["ticker"]} - {inv["number_of_shares"]} shares at ${price:.2f} per share = ${stock_value:.2f}')
+            else:
+                print(f'\nSkipping investment for {inv['ticker']} due to missing data.')
         return total_value
 
     def calculate_return(self, t1_value, t2_value):
