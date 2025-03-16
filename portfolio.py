@@ -36,7 +36,7 @@ class Portfolio:
                 total_value += stock_value
                 print(f'\n{inv["ticker"]} - {inv["number_of_shares"]} shares at ${price:.2f} per share = ${stock_value:.2f}')
             else:
-                print(f'\nSkipping investment for {inv["ticker"]} due to missing data.')
+                continue
         return total_value
 
     def calculate_return(self, t1_value, t2_value):
