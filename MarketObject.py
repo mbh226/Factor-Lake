@@ -29,11 +29,11 @@ class MarketObject():
             print('Ticker ' + ticker + ' is not in the market data')
             return None
 
-
-data = rdata.copy()
-data['Ticker'] = data['Ticker-Region'].dropna().apply(lambda x: x[0:x.find('-')])
-data['Year'] = pd.to_datetime(data['Date']).dt.year
-data = data[['Ticker', 'Ending Price', 'Year']]
+### MOVED THIS TO PORTFOLIO.PY ###
+#data = rdata.copy()
+#data['Ticker'] = data['Ticker-Region'].dropna().apply(lambda x: x[0:x.find('-')])
+#data['Year'] = pd.to_datetime(data['Date']).dt.year
+#data = data[['Ticker', 'Ending Price', 'Year']]
 
 marketObject_2002 = MarketObject(data.loc[data['Year'] == 2002], 2002)
 marketObject_2003 = MarketObject(data.loc[data['Year'] == 2003], 2003)
