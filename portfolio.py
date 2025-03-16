@@ -1,5 +1,5 @@
 ### HYPOTHETICALLY IMPORTING MARKET CLASS FROM market.py ###
-from MarketObject import MarketObject
+from MarketObject import MarketObject, load_data
 
 class Portfolio:
     ### INITIALIZE PORTFOLIO BY PROVIDING A NAME AND A LIST OF INVESTMENTS ###
