@@ -28,7 +28,7 @@ class Portfolio:
     ### CALCULATE PORTFOLIO VALUE ###
     def present_value(self, market):
         total_value = 0
-        print(f'Portfolio values for {market.t}:')
+        print(f'\nPortfolio values for {market.t}:')
         for inv in self.investments:
             price = market.getPrice(inv['ticker'])
             if price is not None:
@@ -43,7 +43,7 @@ class Portfolio:
         if t1_value !=0:
             return (t2_value - t1_value) / t1_value * 100
         else:
-            raise ValueError("Value at time 1 is 0")
+            raise ValueError('Value at time 1 is 0')
 
 ### USING PORTFOLIO WITH MARKET OBJECT ###
 rdata = load_data()
@@ -66,6 +66,6 @@ value_t2 = portfolio.present_value(marketObject_2003)
 
 factor_lake_return = portfolio.calculate_return(value_t1,value_t2)
 
-print(f'Portfolio Value in 2002: ${value_t1:.2f}')
+print(f'\nPortfolio Value in 2002: ${value_t1:.2f}')
 print(f'Portfolio Value in 2003: ${value_t2:.2f}')
-print(f'Portfolio Return from 2002 to 2003: {factor_lake_return:.2f}%')
+print(f'\nPortfolio Return from 2002 to 2003: {factor_lake_return:.2f}%')
