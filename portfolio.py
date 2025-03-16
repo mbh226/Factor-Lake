@@ -40,6 +40,7 @@ class Portfolio:
             raise ValueError("Value at time 1 is 0")
 
 ### USING PORTFOLIO WITH MARKET OBJECT ###
+rdata = load_data()
 data = rdata.copy()
 data['Ticker'] = data['Ticker-Region'].dropna().apply(lambda x: x[0:x.find('-')])
 data['Year'] = pd.to_datetime(data['Date']).dt.year
