@@ -5,8 +5,12 @@
 import pandas as pd
 import numpy as np
 
-file_path = '/content/drive/My Drive/Cayuga Fund Factor Lake/FR2000 Annual Quant Data FOR RETURN SIMULATION.xlsx'
-rdata = pd.read_excel(file_path, sheet_name = 'Data', header = 2, skiprows = [3, 4])
+### CREATING FUNCTION TO LOAD DATA ###
+def load_data():
+    file_path = '/content/drive/My Drive/Cayuga Fund Factor Lake/FR2000 Annual Quant Data FOR RETURN SIMULATION.xlsx'
+    rdata = pd.read_excel(file_path, sheet_name='Data', header=2, skiprows=[3, 4])
+
+    return rdata
 
 class MarketObject():
     def __init__(self, data, t):
