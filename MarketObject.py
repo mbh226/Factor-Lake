@@ -27,7 +27,7 @@ class MarketObject():
 
         #check to see if results are empty - molly
         if ticker_data.empty:
-            print(f"{ticker} not found in market data for {self.t}")
+            print(f"{ticker} - not found in market data for {self.t}")
             return None
 
         #if the data exists, return the last row's ending price - molly 
