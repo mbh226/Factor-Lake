@@ -37,5 +37,5 @@ class MarketObject():
 
 #marketObject_2002 = MarketObject(data.loc[data['Year'] == 2002], 2002)
 #marketObject_2003 = MarketObject(data.loc[data['Year'] == 2003], 2003)
-print('price of AOS in 2002 = ' + str(marketObject_2002.getPrice('AOS')))
-print('price of AOS in 2003 = ' + str(marketObject_2003.getPrice('AOS')))
+#print('price of AOS in 2002 = ' + str(marketObject_2002.getPrice('AOS')))
+#print('price of AOS in 2003 = ' + str(marketObject_2003.getPrice('AOS')))
