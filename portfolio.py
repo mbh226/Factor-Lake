@@ -31,6 +31,12 @@ class Portfolio:
         for inv in self.investments:
             ### HYPOTHETICAL GETPRICE METHOD FROM MARKET CLASS FOR EACH STOCK ###
             price = market.getPrice(inv["ticker"])
+
+            #if ticket is not in dataset for that year
+            if price is None:
+                print(f"Skipping investment for {inv['ticker']} due to missing data.")
+                continue
+                
             total_value += price * inv["number_of_shares"]
         return total_value
 
