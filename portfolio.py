@@ -34,7 +34,10 @@ class Portfolio:
         return total_value
 
     def calculate_return(self, t1_value, t2_value):
-        return (t2_value - t1_value) / t1_value * 100
+        if t1 !=0:
+            return (t2_value - t1_value) / t1_value * 100
+        else:
+            raise ValueError("Value at time 1 is 0")
 
 ### USING PORTFOLIO WITH MARKET OBJECT ###
 data = rdata.copy()
@@ -51,8 +54,8 @@ portfolio.add_investment("AOS", 50)
 portfolio.add_investment("AAPL", 10)
 
 ## PORTFOLIO VALUE CALCULATION ###
-value_t1 = portfolio.present_value(t1_price)
-value_t2 = portfolio.present_value(t2_price)
+value_t1 = portfolio.present_value(marketObject_2002) #changed t1_price to marketObject_2002
+value_t2 = portfolio.present_value(marketObject_2003)#changed t2_price to marketObject_2003
 
 factor_lake_return = portfolio.calculate_return(value_t1,value_t2)
 
