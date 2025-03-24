@@ -15,12 +15,26 @@ def load_data():
 class MarketObject():
     def __init__(self, data, t):
         """
-        data(Dataframe):    column 1 being 'Ticker', column 2 being 'Ending Price'
+        data(Dataframe):    column 1 being 'Ticker', column 2 being 'Ending Price, column 3 being 'Year', column 4 being '6-Mo Momentum %' '
         t(Datetime):        Date of market data, 
         """
-        self.stocks = data.dropna()
-        self.stocks.rename(columns = {self.stocks.columns[0]: 'Ticker', self.stocks.columns[1]: 'Ending Price'}, inplace = True)
+        data.columns = data.columns.str.strip()
+
+        data = data.loc[:, ~data.columns.duplicated(keep='first')]
+
+        if 'Ticker' not in data.columns and 'Ticker-Region' in data.columns:
+            data['Ticker'] = data['Ticker-Region'].dropna().apply(lambda x: x.split('-')[0].strip())
+
+        if 'Year' not in data.columns and 'Date' in data.columns:
+            data['Date'] = pd.to_datetime(data['Date'])
+            data['Year'] = data['Date'].dt.year
+
+        keep_cols = ['Ticker', 'Ending Price', 'Year', '6-Mo Momentum %']
+        data = data[[col for col in keep_cols if col in data.columns]].copy()
+
+        self.stocks = data
         self.t = t
+
 
     def getPrice(self, ticker):
         ticker_data = self.stocks.loc[self.stocks['Ticker'] == ticker]
