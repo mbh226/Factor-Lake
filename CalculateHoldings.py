@@ -24,19 +24,17 @@ def calculate_holdings(aum, market):
 
     return holdings
 
-def calculate_growth(data, portfolio, start_year, end_year, market):
-    data = data.copy()
-    data['Year'] = pd.to_datetime(data['Date']).dt.year
-    start_prices = data.loc[data['Year'] == start_year, ['Ticker-Region', 'Ending Price']].set_index('Ticker-Region')
-    end_prices = data.loc[data['Year'] == end_year, ['Ticker-Region', 'Ending Price']].set_index('Ticker-Region')
+def calculate_growth(portfolio, start_year, end_year, market):
+    # Calculate growth using the market object for price retrieval
+    total_start_value = sum(portfolio[ticker] * market.getPrice(ticker) for ticker in portfolio if market.getPrice(ticker) is not None)
+    total_end_value = sum(portfolio[ticker] * market.getPrice(ticker) for ticker in portfolio if market.getPrice(ticker) is not None)
 
-    total_start_value = sum(portfolio[ticker] * start_prices.loc[ticker, 'Ending Price'] for ticker in portfolio if ticker in start_prices.index)
-    total_end_value = sum(portfolio[ticker] * end_prices.loc[ticker, 'Ending Price'] for ticker in portfolio if ticker in end_prices.index)
-
-    removed_stocks = [ticker for ticker in portfolio if ticker not in end_prices.index]
-    liquidated_value = sum(portfolio[ticker] * start_prices.loc[ticker, 'Ending Price'] for ticker in removed_stocks if ticker in start_prices.index)
+    # Handle removed stocks
+    removed_stocks = [ticker for ticker in portfolio if market.getPrice(ticker) is None]
+    liquidated_value = sum(portfolio[ticker] * market.getPrice(ticker) for ticker in removed_stocks if market.getPrice(ticker) is not None)
     total_end_value += liquidated_value
 
+    # Calculate growth
     growth = (total_end_value - total_start_value) / total_start_value if total_start_value else 0
     return growth, total_start_value, total_end_value
 
@@ -54,7 +52,7 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
             aum=aum,
             market=market
         )
-
+        
         # Convert holdings dictionary into investments for Portfolio
         invest = [{'ticker': ticker, 'number_of_shares': shares} for ticker, shares in portfolio_holdings.items()]
         portfolio = Portfolio(name=f"Portfolio_{year}", investments=invest)
