@@ -5,6 +5,9 @@ import pandas as pd
 def calculate_holdings(aum, market):
     # Factor values for all tickers in the market
     factor_values = {ticker: Factors.Momentum6m(ticker, market) for ticker in market.stocks['Ticker']}
+    
+    # Remove None values from factor_values
+    factor_values = {ticker: value for ticker, value in factor_values.items() if value is not None}
 
     # Sort securities by factor values in descending order
     sorted_securities = sorted(factor_values.items(), key=lambda x: x[1], reverse=True)
