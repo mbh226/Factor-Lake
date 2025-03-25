@@ -1,5 +1,6 @@
 ### HYPOTHETICALLY IMPORTING MARKET CLASS FROM market.py ###
 from MarketObject import MarketObject, load_data
+from CalculateHoldings import calculate_holdings, rebalance_portfolio
 import pandas as pd
 
 class Portfolio:
@@ -40,7 +41,7 @@ class Portfolio:
         return total_value
 
     def calculate_return(self, t1_value, t2_value):
-        if t1_value !=0:
+        if t1_value != 0:
             return (t2_value - t1_value) / t1_value * 100
         else:
             raise ValueError('Value at time 1 is 0')
@@ -60,12 +61,16 @@ portfolio = Portfolio('FACTOR LAKE PORTFOLIO')
 portfolio.add_investment("AOS", 50)
 portfolio.add_investment("AAPL", 10)
 
-## PORTFOLIO VALUE CALCULATION ###
+### PORTFOLIO VALUE CALCULATION ###
 value_t1 = portfolio.present_value(marketObject_2002)
 value_t2 = portfolio.present_value(marketObject_2003)
 
-factor_lake_return = portfolio.calculate_return(value_t1,value_t2)
+factor_lake_return = portfolio.calculate_return(value_t1, value_t2)
 
 print(f'\nPortfolio Value in 2002: ${value_t1:.2f}')
 print(f'Portfolio Value in 2003: ${value_t2:.2f}')
 print(f'\nPortfolio Return from 2002 to 2003: {factor_lake_return:.2f}%')
+
+# Example: Full portfolio rebalance for the range of years
+final_portfolio = rebalance_portfolio(data, start_year=2002, end_year=2023, initial_aum=100000)
+print(f"\nRebalanced Portfolio: {final_portfolio}")
