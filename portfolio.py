@@ -1,6 +1,6 @@
 ### HYPOTHETICALLY IMPORTING MARKET CLASS FROM market.py ###
 from MarketObject import MarketObject, load_data
-from CalculateHoldings import calculate_holdings, rebalance_portfolio
+from CalculateHoldings import rebalance_portfolio
 import pandas as pd
 
 class Portfolio:
