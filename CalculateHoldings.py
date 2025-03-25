@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from MarketObject import MarketObject
 from FactorFunction import Factors
 import pandas as pd
@@ -51,10 +52,11 @@ def calculate_growth(portfolio, start_year, end_year, next_market, current_marke
     growth = (total_end_value - total_start_value) / total_start_value if total_start_value else 0
     return growth, total_start_value, total_end_value
 
-
 def rebalance_portfolio(data, start_year, end_year, initial_aum):
     aum = initial_aum
     portfolio = {}
+    years = []
+    portfolio_values = []
 
     for year in range(start_year, end_year + 1):
         print(f"\nRebalancing Portfolio for {year} based on factors...")
@@ -72,16 +74,27 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
 
         if market.t < end_year:
             next_market = MarketObject(data.loc[data['Year'] == year +1], year+1)
-            growth,  total_start_value, total_end_value = calculate_growth(formatted_portfolio, year, year + 1, next_market, market)
+            growth, total_start_value, total_end_value = calculate_growth(formatted_portfolio, year, year + 1, next_market, market)
             print(f"Year {year} to {year+1}: Growth: {growth:.2%}, Start Value: ${total_start_value:.2f}, End Value: ${total_end_value:.2f}")
             aum = total_end_value  # Liquidate and reinvest
+        
+        # Track values for plotting
+        years.append(year)
+        portfolio_values.append(aum)
 
     # Calculate overall growth
     overall_growth = (aum - initial_aum) / initial_aum if initial_aum else 0
     print(f"\nFinal Portfolio Value after {end_year}: ${aum:.2f}")
     print(f"Overall Growth from {start_year} to {end_year}: {overall_growth * 100:.2f}%")
 
+    # Plot the portfolio value over time
+    plt.figure(figsize=(10, 5))
+    plt.plot(years, portfolio_values, marker='o', linestyle='-', color='b', label='Portfolio Value')
+    plt.xlabel("Year")
+    plt.ylabel("Portfolio Value ($)")
+    plt.title("Portfolio Growth Over Time")
+    plt.grid(True)
+    plt.legend()
+    plt.show()
+
     return portfolio
-
-
-
