@@ -77,7 +77,7 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
             aum = total_end_value  # Liquidate and reinvest
 
     # Calculate overall growth
-    overall_growth = ((aum - initial_aum) / initial_aum)*100 if initial_aum else 0
+    overall_growth = (aum - initial_aum) / initial_aum if initial_aum else 0
     print(f"\nFinal Portfolio Value after {end_year}: ${aum:.2f}")
     print(f"Overall Growth from {start_year} to {end_year}: {overall_growth:.2f}%")
 
