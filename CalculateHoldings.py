@@ -1,6 +1,5 @@
 from MarketObject import MarketObject
 from FactorFunction import Factors
-from portfolio import Portfolio
 import pandas as pd
 
 def calculate_holdings(aum, market):
