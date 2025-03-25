@@ -24,6 +24,22 @@ def calculate_holdings(aum, market):
 
     return holdings
 
+def calculate_growth(data, portfolio, start_year, end_year, market):
+    data = data.copy()
+    data['Year'] = pd.to_datetime(data['Date']).dt.year
+    start_prices = data.loc[data['Year'] == start_year, ['Ticker-Region', 'Ending Price']].set_index('Ticker-Region')
+    end_prices = data.loc[data['Year'] == end_year, ['Ticker-Region', 'Ending Price']].set_index('Ticker-Region')
+
+    total_start_value = sum(portfolio[ticker] * start_prices.loc[ticker, 'Ending Price'] for ticker in portfolio if ticker in start_prices.index)
+    total_end_value = sum(portfolio[ticker] * end_prices.loc[ticker, 'Ending Price'] for ticker in portfolio if ticker in end_prices.index)
+
+    removed_stocks = [ticker for ticker in portfolio if ticker not in end_prices.index]
+    liquidated_value = sum(portfolio[ticker] * start_prices.loc[ticker, 'Ending Price'] for ticker in removed_stocks if ticker in start_prices.index)
+    total_end_value += liquidated_value
+
+    growth = (total_end_value - total_start_value) / total_start_value if total_start_value else 0
+    return growth, total_start_value, total_end_value
+
 def rebalance_portfolio(data, start_year, end_year, initial_aum):
     data = data.copy()
     data['Year'] = pd.to_datetime(data['Date']).dt.year
@@ -36,7 +52,7 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
 
         portfolio_holdings = calculate_holdings(
             aum=aum,
-            markets={year: market}
+            market=market
         )
 
         # Convert holdings dictionary into investments for Portfolio
@@ -45,7 +61,6 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
 
             if year < end_year:
                 market = MarketObject(data.loc[data['Year'] == year], year)
-                #need to define calculate_growth
                 growth, start_value, end_value = calculate_growth(data, portfolio, year, year + 1, market)
                 print(f"Year {year} to {year+1}: Growth: {growth:.2%}, Start Value: ${start_value:.2f}, End Value: ${end_value:.2f}")
                 aum = end_value  # Liquidate and reinvest
