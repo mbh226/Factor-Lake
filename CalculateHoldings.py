@@ -26,14 +26,23 @@ def calculate_holdings(aum, market):
 
     return holdings
 
-def calculate_growth(portfolio, start_year, end_year, market):
+def calculate_growth(portfolio, start_year, end_year, next_market):
     # Calculate growth using the market object for price retrieval
-    total_start_value = sum(portfolio[ticker] * market.getPrice(ticker) for ticker in portfolio if market.getPrice(ticker) is not None)
-    total_end_value = sum(portfolio[ticker] * market.getPrice(ticker) for ticker in portfolio if market.getPrice(ticker) is not None)
+    total_start_value = sum(
+        portfolio[ticker] * next_market.getPrice(ticker)  # Using next_market for end year prices
+        for ticker in portfolio if next_market.getPrice(ticker) is not None
+    )
+    total_end_value = sum(
+        portfolio[ticker] * next_market.getPrice(ticker)
+        for ticker in portfolio if next_market.getPrice(ticker) is not None
+    )
 
     # Handle removed stocks
-    removed_stocks = [ticker for ticker in portfolio if market.getPrice(ticker) is None]
-    liquidated_value = sum(portfolio[ticker] * market.getPrice(ticker) for ticker in removed_stocks if market.getPrice(ticker) is not None)
+    removed_stocks = [ticker for ticker in portfolio if next_market.getPrice(ticker) is None]
+    liquidated_value = sum(
+        portfolio[ticker] * next_market.getPrice(ticker)
+        for ticker in removed_stocks if next_market.getPrice(ticker) is not None
+    )
     total_end_value += liquidated_value
 
     # Calculate growth
@@ -55,12 +64,14 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
         
         # Convert holdings dictionary into investments for Portfolio
         portfolio[f"Portfolio_{year}"] = [{'ticker': ticker, 'number_of_shares': shares} for ticker, shares in portfolio_holdings.items()]
-        
+        # Convert the portfolio for the current year back to the expected format
+        formatted_portfolio = {inv['ticker']: inv['number_of_shares'] for inv in portfolio[f"Portfolio_{year}"]}
+
         if market.t < end_year:
             next_market = MarketObject(data.loc[data['Year'] == year +1], year+1)
-            growth, start_value, end_value = calculate_growth(portfolio_holdings, year, year + 1, market)
-            print(f"Year {year} to {year+1}: Growth: {growth:.2%}, Start Value: ${start_value:.2f}, End Value: ${end_value:.2f}")
-            aum = end_value  # Liquidate and reinvest
+            growth,  total_start_value, total_end_value = calculate_growth(formatted_portfolio, year, year + 1, next_market)
+            print(f"Year {year} to {year+1}: Growth: {growth:.2%}, Start Value: ${total_start_value:.2f}, End Value: ${total_end_value:.2f}")
+            aum = total_end_value  # Liquidate and reinvest
 
     # Calculate overall growth
     overall_growth = (aum - initial_aum) / initial_aum if initial_aum else 0
