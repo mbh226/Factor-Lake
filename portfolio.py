@@ -72,5 +72,5 @@ print(f'Portfolio Value in 2003: ${value_t2:.2f}')
 print(f'\nPortfolio Return from 2002 to 2003: {factor_lake_return:.2f}%')
 
 # Example: Full portfolio rebalance for the range of years
-final_portfolio = rebalance_portfolio(data, start_year=2002, end_year=2023, initial_aum=100000)
+final_portfolio = rebalance_portfolio(data, start_year=2002, end_year=2023, initial_aum=1)
 print(f"\nRebalanced Portfolio: {final_portfolio}")
