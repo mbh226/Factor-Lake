@@ -1,6 +1,5 @@
 ### HYPOTHETICALLY IMPORTING MARKET CLASS FROM market.py ###
 from MarketObject import MarketObject, load_data
-from CalculateHoldings import calculate_holdings, rebalance_portfolio
 import pandas as pd
 
 class Portfolio:
@@ -45,11 +44,6 @@ class Portfolio:
             return (t2_value - t1_value) / t1_value * 100
         else:
             raise ValueError('Value at time 1 is 0')
-    
-     ### REBALANCE PORTFOLIO ###
-    def rebalance(self, aum, market):
-        new_holdings = calculate_holdings(aum, market)
-        self.investments = [{'ticker': ticker, 'number_of_shares': shares} for ticker, shares in new_holdings.items()]
 
 ### USING PORTFOLIO WITH MARKET OBJECT ###
 rdata = load_data()
@@ -75,13 +69,3 @@ factor_lake_return = portfolio.calculate_return(value_t1,value_t2)
 print(f'\nPortfolio Value in 2002: ${value_t1:.2f}')
 print(f'Portfolio Value in 2003: ${value_t2:.2f}')
 print(f'\nPortfolio Return from 2002 to 2003: {factor_lake_return:.2f}%')
-
-### REBALANCE PORTFOLIO###
-aum = 100000  # Example AUM
-portfolio.rebalance(aum, marketObject_2002)
-print("\nRebalanced Portfolio:")
-print(portfolio.investments)
-
-# Example: Full portfolio rebalance for the range of years
-final_portfolio = rebalance_portfolio(data, start_year=2002, end_year=2023, initial_aum=100000)
-print(f"\nRebalanced Portfolio: {final_portfolio}")
