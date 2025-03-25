@@ -1,6 +1,6 @@
 ### HYPOTHETICALLY IMPORTING MARKET CLASS FROM market.py ###
 from MarketObject import MarketObject, load_data
-from CalculateHoldings import calculate_holdings, rebalance_portfolio
+from CalculateHoldings import rebalance_portfolio
 import pandas as pd
 
 class Portfolio:
@@ -51,7 +51,7 @@ rdata = load_data()
 data = rdata.copy()
 data['Ticker'] = data['Ticker-Region'].dropna().apply(lambda x: x[0:x.find('-')])
 data['Year'] = pd.to_datetime(data['Date']).dt.year
-data = data[['Ticker', 'Ending Price', 'Year']]
+data = data[['Ticker', 'Ending Price', 'Year', '6-Mo Momentum %']]
 
 marketObject_2002 = MarketObject(data.loc[data['Year'] == 2002], 2002)
 marketObject_2003 = MarketObject(data.loc[data['Year'] == 2003], 2003)
@@ -72,5 +72,5 @@ print(f'Portfolio Value in 2003: ${value_t2:.2f}')
 print(f'\nPortfolio Return from 2002 to 2003: {factor_lake_return:.2f}%')
 
 # Example: Full portfolio rebalance for the range of years
-final_portfolio = rebalance_portfolio(data, start_year=2002, end_year=2023, initial_aum=100000)
+final_portfolio = rebalance_portfolio(data, start_year=2002, end_year=2023, initial_aum=1)
 print(f"\nRebalanced Portfolio: {final_portfolio}")
