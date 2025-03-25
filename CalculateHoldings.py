@@ -54,8 +54,7 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
         )
         
         # Convert holdings dictionary into investments for Portfolio
-        invest = [{'ticker': ticker, 'number_of_shares': shares} for ticker, shares in portfolio_holdings.items()]
-        portfolio = portfolio(name=f"Portfolio_{year}", investments=invest)
+        portfolio[f"Portfolio_{year}"] = [{'ticker': ticker, 'number_of_shares': shares} for ticker, shares in portfolio_holdings.items()]
         
         if market.t < end_year:
             next_market = MarketObject(data.loc[data['Year'] == year +1], year+1)
