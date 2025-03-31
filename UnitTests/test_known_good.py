@@ -40,13 +40,16 @@ class TestPortfolio(unittest.TestCase):
         final_value_tolerance = 0.01
         growth_tolerance = 0.1
 
-        rounded_value_2023 = round(value_2023, 2)
-        rounded_expected_final_value = round(expected_final_value, 2)
-        rounded_factor_lake_return = round(factor_lake_return, 2)
-        rounded_expected_growth = round(expected_growth, 2)
+        print(f"Calculated value_2023: {value_2023}")
+        print(f"Expected final value: {expected_final_value}")
 
-        self.assertAlmostEqual(value_2023, rounded_expected_final_value, delta=final_value_tolerance)
-        self.assertAlmostEqual(factor_lake_return, rounded_expected_growth, delta=growth_tolerance)
+        #rounded_value_2023 = round(value_2023, 2)
+        #rounded_expected_final_value = round(expected_final_value, 2)
+        #rounded_factor_lake_return = round(factor_lake_return, 2)
+        #rounded_expected_growth = round(expected_growth, 2)
+
+        self.assertAlmostEqual(round(value_2023, 2), expected_final_value, delta=final_value_tolerance)
+        self.assertAlmostEqual(round(factor_lake_return, 2), expected_growth, delta=growth_tolerance)
 
 if __name__ == '__main__':
     unittest.main()
