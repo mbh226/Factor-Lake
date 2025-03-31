@@ -18,14 +18,14 @@ class TestPortfolio(unittest.TestCase):
         data['Year'] = pd.to_datetime(data['Date']).dt.year
         data = data[['Ticker', 'Ending Price', 'Year', '6-Mo Momentum %']]
 
-    #initialize market objects
-    self.marketObject_2002 = MarketObject(data.loc[data['Year'] == 2002],2002)
-    self.marketObject_2023 = MarketObject(data.loc[data['Year'] == 2023],2023)
+        #initialize market objects
+        self.marketObject_2002 = MarketObject(data.loc[data['Year'] == 2002],2002)
+        self.marketObject_2023 = MarketObject(data.loc[data['Year'] == 2023],2023)
 
-    #initialize portfolio and add investments
-    self.portfolio = Portfolio('FACTOR LAKE PORTFOLIO')
-    self.portfolio.add_investment("AOS", 50)
-    self.portfolio.add_investment("AAPL", 10)
+        #initialize portfolio and add investments
+        self.portfolio = Portfolio('FACTOR LAKE PORTFOLIO')
+        self.portfolio.add_investment("AOS", 50)
+        self.portfolio.add_investment("AAPL", 10)
 
     def test_portfolio(self):
         expected_final_value = 4.39
