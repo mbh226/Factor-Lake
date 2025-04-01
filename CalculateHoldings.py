@@ -92,5 +92,5 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
     plt.legend()
     plt.show()
 
-    return portfolio, aum, overall_growth
+    return aum, overall_growth
 
