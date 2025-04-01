@@ -73,11 +73,6 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
             growth, total_start_value, total_end_value = calculate_growth(portfolio, next_market, market)
             print(f"Year {year} to {year+1}: Growth: {growth:.2%}, Start Value: ${total_start_value:.2f}, End Value: ${total_end_value:.2f}")
             aum = total_end_value  # Liquidate and reinvest
-            
-        # Track values for plotting
-        
-        years.append(year)
-        portfolio_values.append(aum)
 
     return portfolio_values
 
