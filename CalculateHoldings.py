@@ -96,7 +96,7 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
     else:
         print("Information Ratio could not be calculated due to zero tracking error.")
     
-    return portfolio_returns, benchmark_returns
+    return portfolio_returns, benchmark_returns, aum
 
 def get_benchmark_return(year):
     """
