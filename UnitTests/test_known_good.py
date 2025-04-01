@@ -21,6 +21,7 @@ class TestPortfolio(unittest.TestCase):
         #initialize market objects
         self.marketObject_2002 = MarketObject(data.loc[data['Year'] == 2002],2002)
         self.marketObject_2023 = MarketObject(data.loc[data['Year'] == 2023],2023)
+        print(f"Market Object 2023 data: {self.marketObject_2023.data}")
 
         #initialize portfolio and add investments
         self.portfolio = Portfolio('FACTOR LAKE PORTFOLIO')
@@ -33,6 +34,7 @@ class TestPortfolio(unittest.TestCase):
 
         value_2002 = self.portfolio.present_value(self.marketObject_2002)
         value_2023 = self.portfolio.present_value(self.marketObject_2023)
+        print(f"Calculated value_2023: {value_2023}")
 
         factor_lake_return = self.portfolio.calculate_return(value_2002, value_2023)
 
@@ -40,16 +42,14 @@ class TestPortfolio(unittest.TestCase):
         final_value_tolerance = 0.01
         growth_tolerance = 0.1
 
-        print(f"Calculated value_2023: {value_2023}")
-        print(f"Expected final value: {expected_final_value}")
-
-        #rounded_value_2023 = round(value_2023, 2)
-        #rounded_expected_final_value = round(expected_final_value, 2)
-        #rounded_factor_lake_return = round(factor_lake_return, 2)
-        #rounded_expected_growth = round(expected_growth, 2)
-
-        self.assertAlmostEqual(round(value_2023, 2), expected_final_value, delta=final_value_tolerance)
+        print(f"Raw value_2023: {value_2023}")
+        rounded_value_2023 = round(value_2023, 2)
+        rounded_expected_final_value = round(expected_final_value, 2)
+        print(f"Rounded value_2023: {rounded_value_2023}")
+        print(f"Rounded expected final value: {rounded_expected_final_value}")
+        self.assertAlmostEqual(rounded_value_2023, rounded_expected_final_value, delta=final_value_tolerance)
         self.assertAlmostEqual(round(factor_lake_return, 2), expected_growth, delta=growth_tolerance)
+
 
 if __name__ == '__main__':
     unittest.main()
