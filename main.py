@@ -33,11 +33,9 @@ def main():
     print(f'Portfolio Return from 2002 to 2003: {portfolio_return:.2f}%')
 
     ### Rebalancing portfolio across years ###
-    print("Rebalancing portfolio...")
-    final_value, overall_growth = rebalance_portfolio(rdata, start_year=2002, end_year=2023, initial_aum=1)
+    portfolio, final_value, overall_growth = rebalance_portfolio(rdata, start_year=2002, end_year=2023, initial_aum=1)
     print(f"\nFinal Portfolio Value after 2023: ${final_value:.2f}")
     print(f"Overall Growth from 2002 to 2023: {overall_growth * 100:.2f}%")
-
 
 if __name__ == "__main__":
     main()
