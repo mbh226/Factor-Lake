@@ -54,7 +54,7 @@ def calculate_growth(portfolio, next_market, current_market):
 
 def rebalance_portfolio(data, start_year, end_year, initial_aum):
     aum = initial_aum
-    portfolio = Portfolio(name="Initial Portfolio")
+    initial_portfolio = Portfolio(name="Initial Portfolio")
     years = []
     portfolio_values = []
 
@@ -62,14 +62,14 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
         print(f"\nRebalancing Portfolio for {year} based on factors...")
         market = MarketObject(data.loc[data['Year'] == year], year)
         
-        portfolio = calculate_holdings(
+        yearly_portfolio = calculate_holdings(
             aum=aum,
             market=market
         )
         
         if market.t < end_year:
             next_market = MarketObject(data.loc[data['Year'] == year + 1], year + 1)
-            growth, total_start_value, total_end_value = calculate_growth(portfolio, next_market, market)
+            growth, total_start_value, total_end_value = calculate_growth(yearly_portfolio, next_market, market)
             print(f"Year {year} to {year + 1}: Growth: {growth:.2%}, Start Value: ${total_start_value:.2f}, End Value: ${total_end_value:.2f}")
             aum = total_end_value  # Liquidate and reinvest
         
@@ -95,4 +95,4 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
     plt.legend()
     plt.show()
 
-    return portfolio
+    return initial_portfolio
