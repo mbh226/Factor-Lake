@@ -6,35 +6,37 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../'
 
 from FactorFunction import Factors
 from MarketObject import MarketObject, load_data
-from portfolio import rebalance_portfolio
+from portfolio import rebalance_portfolio, final_portfolio
 import unittest
 import pandas as pd
 
 class TestFactorLakePortfolio(unittest.TestCase):
     def setUp(self):
         self.data = load_data()
-        self.data.columns = self.data.columns.str.strip()
-        self.data = self.data.loc[:, ~self.data.columns.duplicated(keep='first')]
-        #split ticker-region at the dash and take the ticker
-        self.data['Ticker'] = self.data['Ticker-Region'].dropna().str.split('-').str[0]
-        self.data['Date'] = pd.to_datetime(self.data['Date'])
-        self.data['Year'] = self.data['Date'].dt.year
+        self.start_year = 2002
+        self.end_year = 2023
+        self.initial_aum = 1
+        self.expected_final_value = 4.39
+        self.expected_growth = 339.42
 
     def test_portfolio_growth(self):
-        initial_aum = 1
-        start_year = 2002
-        end_year = 2023
-
-        portfolio = rebalance_portfolio(self.data, start_year, end_year, initial_aum)
-
-        expected_final_value = 4.39
+        portfolio = rebalance_portfolio(self.data, self.start_year, self.end_year, self.initial_aum)
+        final_portfolio = portfolio[f'Portfolio_{self.end_year}']
         expected_growth = 339.42
 
-        self.assertAlmostEqual(portfolio[f"Portfolio_{end_year}"]['aum'], expected_final_value, delta=0.01)
+        self.assertAlmostEqual(
+            final_portfolio['aum'],
+            self.expected_final_value,
+            delta=0.01
+        )
 
-        overall_growth = (portfolio[-1]['aum'] - initial_aum) / initial_aum * 100
-        self.assertAlmostEqual(overall_growth, expected_growth, delta=0.1,
-                               msg=f'Expected overall growth: {expected_growth}%, but got {overall_growth}%')
+        overall_growth = (final_portfolio['aum'] - self.initial_aum) / self.initial_aum * 100
+        self.assertAlmostEqual(
+            overall_growth,
+            self.expected_growth,
+            delta=0.1,
+            msg=f'Expected overall growth: {expected_growth}%, but got {overall_growth}%'
+        )
 
 if __name__ == '__main__':
     unittest.main()
