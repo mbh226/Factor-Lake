@@ -13,6 +13,8 @@ import pandas as pd
 class TestFactorLakePortfolio(unittest.TestCase):
     def setUp(self):
         self.data = load_data()
+        if 'Year' not in self.data.columns:
+            self.data['Year'] = pd.to_datetime(self.data['Date']).dt.year
         self.start_year = 2002
         self.end_year = 2023
         self.initial_aum = 1
