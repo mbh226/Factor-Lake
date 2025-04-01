@@ -22,14 +22,14 @@ class TestFactorLakePortfolio(unittest.TestCase):
         self.expected_growth = 339.42
 
     def test_portfolio_growth(self):
-        portfolio = rebalance_portfolio(self.data, self.start_year, self.end_year, self.initial_aum)
+        portfolio_values = rebalance_portfolio(self.data, self.start_year, self.end_year, self.initial_aum)
         final_aum = portfolio_values[-1]
-        expected_growth = 339.42
 
         self.assertAlmostEqual(
             final_aum,
             self.expected_final_value,
-            delta=0.01
+            delta=0.01,
+            msg=f'Expected portfolio values: ${self.expected_final_value}%, but got {final_aum}%'
         )
 
         overall_growth = (final_aum - self.initial_aum) / self.initial_aum * 100
@@ -37,7 +37,7 @@ class TestFactorLakePortfolio(unittest.TestCase):
             overall_growth,
             self.expected_growth,
             delta=0.1,
-            msg=f'Expected overall growth: {expected_growth}%, but got {overall_growth}%'
+            msg=f'Expected overall growth: {self.expected_growth}%, but got {overall_growth}%'
         )
 
 if __name__ == '__main__':
