@@ -82,6 +82,8 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
         years.append(year)
         portfolio_values.append(aum)
 
+    return portfolio_values
+
     # Calculate overall growth
     overall_growth = (aum - initial_aum) / initial_aum if initial_aum else 0
     print(f"\nFinal Portfolio Value after {end_year}: ${aum:.2f}")
