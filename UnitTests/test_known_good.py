@@ -4,52 +4,38 @@ import os
 #adding the project directory to sys.path so it can appropriately import portfolio and market objects
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
-from portfolio import Portfolio, factor_lake_return
+from FactorFunction import Factors
 from MarketObject import MarketObject, load_data
+from portfolio import rebalance_portfolio
 import unittest
 import pandas as pd
 
-class TestPortfolio(unittest.TestCase):
+class TestFactorLakePortfolio(unittest.TestCase):
     def setUp(self):
-        rdata = load_data()
-        data = rdata.copy()
+        self.data = load_data()
+        self.data.columns = self.data.columns.str.strip()
+        self.data = self.data.loc[:, ~self.data.columns.duplicated(keep='first')]
         #split ticker-region at the dash and take the ticker
-        data['Ticker'] = data['Ticker-Region'].dropna().str.split('-').str[0]
-        data['Year'] = pd.to_datetime(data['Date']).dt.year
-        data = data[['Ticker', 'Ending Price', 'Year', '6-Mo Momentum %']]
+        self.data['Ticker'] = self.data['Ticker-Region'].dropna().str.split('-').str[0]
+        self.data['Date'] = pd.to_datetime(self.data['Date'])
+        self.data['Year'] = self.data(['Date']).dt.year
 
-        #initialize market objects
-        self.marketObject_2002 = MarketObject(data.loc[data['Year'] == 2002],2002)
-        self.marketObject_2023 = MarketObject(data.loc[data['Year'] == 2023],2023)
-        print(f"Market Object 2023 data: {self.marketObject_2023.stocks}")
+    def test_portfolio_growth(self):
+        initial_aum = 1
+        start_year = 2002
+        end_year = 2023
 
-        #initialize portfolio and add investments
-        self.portfolio = Portfolio('FACTOR LAKE PORTFOLIO')
-        self.portfolio.add_investment("AOS", 50)
-        self.portfolio.add_investment("AAPL", 10)
+        portfolio = rebalance_portfolio(self.data, start_year, end_year, initial_aum)
 
-    def test_portfolio(self):
         expected_final_value = 4.39
         expected_growth = 339.42
 
-        value_2002 = self.portfolio.present_value(self.marketObject_2002)
-        value_2023 = self.portfolio.present_value(self.marketObject_2023)
-        print(f"Calculated value_2023: {value_2023}")
+        self.assertAlmostEqual(portfolio[-1]['aum'], expected_final_value, delta=0.01,
+                               msg=f'Expected final portfolio value: {expected_final_value}, but got {portfolio[-1]["aum"]}')
 
-        factor_lake_return = self.portfolio.calculate_return(value_2002, value_2023)
-
-        #acceptable margins for error
-        final_value_tolerance = 0.01
-        growth_tolerance = 0.1
-
-        print(f"Raw value_2023: {value_2023}")
-        rounded_value_2023 = round(value_2023, 2)
-        rounded_expected_final_value = round(expected_final_value, 2)
-        print(f"Rounded value_2023: {rounded_value_2023}")
-        print(f"Rounded expected final value: {rounded_expected_final_value}")
-        self.assertAlmostEqual(rounded_value_2023, rounded_expected_final_value, delta=final_value_tolerance)
-        self.assertAlmostEqual(round(factor_lake_return, 2), expected_growth, delta=growth_tolerance)
-
+        overall_growth = (portfolio[-1]['aum'] - initial_aum) / initial_aum * 100
+        self.assertAlmostEqual(overall_growth, expected_growth, delta=0.1,
+                               msg=f'Expected overall growth: {expected_growth}%, but got {overall_growth}%')
 
 if __name__ == '__main__':
     unittest.main()
