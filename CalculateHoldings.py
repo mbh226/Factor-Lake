@@ -18,16 +18,16 @@ def calculate_holdings(aum, market):
     top_10_percent = sorted_securities[:max(1, len(sorted_securities) // 10)]
 
     # Calculate number of shares for each selected security
-    portfolio = Portfolio(name=f"Portfolio_{market.t}")
+    portfolio_new = Portfolio(name=f"Portfolio_{market.t}")
     equal_investment = aum / len(top_10_percent)
 
     for ticker, _ in top_10_percent:
         price = market.getPrice(ticker)
         if price is not None and price > 0:
             shares = equal_investment / price
-            portfolio.add_investment(ticker, shares)
+            portfolio_new.add_investment(ticker, shares)
 
-    return portfolio
+    return portfolio_new
 
 def calculate_growth(portfolio, next_market, current_market):
     # Calculate start value using the current market
