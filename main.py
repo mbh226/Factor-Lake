@@ -35,7 +35,6 @@ def main():
     ### Rebalancing portfolio across years ###
     print("Rebalancing portfolio...")
     final_portfolio = rebalance_portfolio(rdata, start_year=2002, end_year=2023, initial_aum=1)
-    print(f"\nFinal Rebalanced Portfolio: {final_portfolio}")
 
 if __name__ == "__main__":
     main()
