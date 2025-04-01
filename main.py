@@ -1,5 +1,5 @@
 from MarketObject import load_data, MarketObject
-from Portfolio import Portfolio
+from portfolio import Portfolio
 from CalculateHoldings import rebalance_portfolio
 import pandas as pd
 
