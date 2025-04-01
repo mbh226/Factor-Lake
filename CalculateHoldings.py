@@ -79,7 +79,7 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
             portfolio_returns.append(growth)
 
             # Get benchmark return for the year (replace it as needed)
-            benchmark_return = get_benchmark_return(year)  # Define this function based on your benchmark data
+            benchmark_return = get_benchmark_return(year)  # Define this function based on benchmark data
             benchmark_returns.append(benchmark_return)
 
         years.append(year)
