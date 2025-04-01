@@ -59,7 +59,7 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
     years = []
     portfolio_values = []
 
-    for year in range(start_year, end_year):
+    for year in range(start_year, end_year + 1):
         print(f"\nRebalancing Portfolio for {year} based on factors...")
         market = MarketObject(data.loc[data['Year']==year], year)
 
