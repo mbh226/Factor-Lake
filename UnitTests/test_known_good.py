@@ -30,8 +30,7 @@ class TestFactorLakePortfolio(unittest.TestCase):
         expected_final_value = 4.39
         expected_growth = 339.42
 
-        self.assertAlmostEqual(portfolio[-1]['aum'], expected_final_value, delta=0.01,
-                               msg=f'Expected final portfolio value: {expected_final_value}, but got {portfolio[-1]["aum"]}')
+        self.assertAlmostEqual(portfolio[f"Portfolio_{end_year}"]['aum'], expected_final_value, delta=0.01)
 
         overall_growth = (portfolio[-1]['aum'] - initial_aum) / initial_aum * 100
         self.assertAlmostEqual(overall_growth, expected_growth, delta=0.1,
