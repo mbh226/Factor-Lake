@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../'
 
 from FactorFunction import Factors
 from MarketObject import MarketObject, load_data
-from portfolio import rebalance_portfolio, final_portfolio
+from CalculateHoldings import rebalance_portfolio
 import unittest
 import pandas as pd
 
