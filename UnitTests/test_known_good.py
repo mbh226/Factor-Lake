@@ -18,7 +18,7 @@ class TestFactorLakePortfolio(unittest.TestCase):
         #split ticker-region at the dash and take the ticker
         self.data['Ticker'] = self.data['Ticker-Region'].dropna().str.split('-').str[0]
         self.data['Date'] = pd.to_datetime(self.data['Date'])
-        self.data['Year'] = self.data(['Date']).dt.year
+        self.data['Year'] = self.data['Date'].dt.year
 
     def test_portfolio_growth(self):
         initial_aum = 1
