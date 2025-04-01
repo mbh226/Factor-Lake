@@ -23,17 +23,16 @@ class TestFactorLakePortfolio(unittest.TestCase):
 
     def test_portfolio_growth(self):
         portfolio = rebalance_portfolio(self.data, self.start_year, self.end_year, self.initial_aum)
-        print(f"Final Portfolio for {self.end_year}: {portfolio[f'Portfolio_{self.end_year}']}")
-        final_portfolio = portfolio[f'Portfolio_{self.end_year}']
+        final_aum = portfolio_values[-1]
         expected_growth = 339.42
 
         self.assertAlmostEqual(
-            final_portfolio['aum'],
+            final_aum,
             self.expected_final_value,
             delta=0.01
         )
 
-        overall_growth = (final_portfolio['aum'] - self.initial_aum) / self.initial_aum * 100
+        overall_growth = (final_aum - self.initial_aum) / self.initial_aum * 100
         self.assertAlmostEqual(
             overall_growth,
             self.expected_growth,
