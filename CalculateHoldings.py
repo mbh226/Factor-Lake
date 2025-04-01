@@ -126,11 +126,11 @@ def calculate_information_ratio(portfolio_returns, benchmark_returns):
     portfolio_returns = np.array(portfolio_returns)
     benchmark_returns = np.array(benchmark_returns)
 
-    # Calculate excess returns
+    # Calculate active returns
     active_returns = portfolio_returns - benchmark_returns
     
-    # Calculate the mean excess return (numerator)
-    mean_excess_return = np.mean(active_returns)
+    # Calculate the mean active return (numerator)
+    mean_active_return = np.mean(active_returns)
     
     # Calculate tracking error (denominator)
     tracking_error = np.std(active_returns, ddof=1)  # Use sample std deviation
@@ -140,5 +140,5 @@ def calculate_information_ratio(portfolio_returns, benchmark_returns):
         return None  # Or return float('nan') to indicate undefined IR
     
     # Compute Information Ratio
-    information_ratio = mean_excess_return / tracking_error
+    information_ratio = mean_active_return / tracking_error
     return information_ratio
