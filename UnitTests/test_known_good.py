@@ -1,9 +1,3 @@
-import sys
-import os
-
-#adding the project directory to sys.path so it can appropriately import portfolio and market objects
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
-
 from FactorFunction import Factors
 from MarketObject import MarketObject, load_data
 from CalculateHoldings import rebalance_portfolio
