@@ -21,7 +21,7 @@ class TestPortfolio(unittest.TestCase):
         #initialize market objects
         self.marketObject_2002 = MarketObject(data.loc[data['Year'] == 2002],2002)
         self.marketObject_2023 = MarketObject(data.loc[data['Year'] == 2023],2023)
-        print(f"Market Object 2023 data: {self.marketObject_2023.data}")
+        print(f"Market Object 2023 data: {self.marketObject_2023.stocks}")
 
         #initialize portfolio and add investments
         self.portfolio = Portfolio('FACTOR LAKE PORTFOLIO')
