@@ -23,7 +23,7 @@ class MarketObject():
             data['Year'] = data['Date'].dt.year
         keep_cols = ['Ticker', 'Ending Price', 'Year', 'ROE using 9/30 Data', 'ROA using 9/30 Data', '6-Mo Momentum %']
         data = data[[col for col in keep_cols if col in data.columns]].copy()
-        data[['ROE using 9/30 Data', 'ROA using 9/30 Data']] = data[['ROE using 9/30 Data', 'ROA using 9/30 Data']].replace('--', None)
+        data[['Ending Price', 'ROE using 9/30 Data', 'ROA using 9/30 Data']] = data[['Ending Price', 'ROE using 9/30 Data', 'ROA using 9/30 Data']].replace('--', None)
         self.stocks = data
         self.t = t
     def getPrice(self, ticker):
