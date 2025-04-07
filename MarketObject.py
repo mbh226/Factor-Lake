@@ -11,7 +11,7 @@ def load_data():
 class MarketObject():
     def __init__(self, data, t):
         """
-        data(Dataframe):    column 1 being 'Ticker', column 2 being 'Ending Price', column 3 being ''Year'', column 4 being ''6-Mo Momentum %'
+        data(Dataframe):    column 1 being 'Ticker', column 2 being 'Ending Price', column 3 being ''Year'', column 4 being 'ROE using 9/30 Data', column 5 being 'ROA using 9/30 Data', column 6 being ''6-Mo Momentum %'
         t(Datetime):        Date of market data,
         """
         data.columns = data.columns.str.strip()
@@ -21,7 +21,7 @@ class MarketObject():
         if 'Year' not in data.columns and 'Date' in data.columns:
             data['Date'] = pd.to_datetime(data['Date'])
             data['Year'] = data['Date'].dt.year
-        keep_cols = ['Ticker', 'Ending Price', 'Year', '6-Mo Momentum %']
+        keep_cols = ['Ticker', 'Ending Price', 'Year', 'ROE using 9/30 Data', 'ROA using 9/30 Data', '6-Mo Momentum %']
         data = data[[col for col in keep_cols if col in data.columns]].copy()
         self.stocks = data
         self.t = t

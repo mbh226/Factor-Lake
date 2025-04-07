@@ -1,13 +1,13 @@
 import matplotlib.pyplot as plt
 from MarketObject import MarketObject
-from FactorFunction import Factors
+from FactorFunction import Factors, Momentum6m, ROE, ROA
 from portfolio import Portfolio
 import pandas as pd
 import numpy as np
 
 def calculate_holdings(factor, aum, market):
     # Factor values for all tickers in the market
-    factor_values = {ticker: factor(ticker, market) for ticker in market.stocks['Ticker']}
+    factor_values = {ticker: factor.get(ticker, market) for ticker in market.stocks['Ticker']}
     
     # Remove None values from factor_values
     factor_values = {ticker: value for ticker, value in factor_values.items() if value is not None}
@@ -34,7 +34,7 @@ def calculate_growth(portfolio, next_market, current_market):
     # Calculate start value using the current market
     total_start_value = 0
     for factor_portfolio in portfolio:
-        total_start_value = factor_portfolio.present_value(current_market)
+        total_start_value += factor_portfolio.present_value(current_market)
 
     # Calculate end value using next market, handling missing stocks
     total_end_value = 0
