@@ -39,7 +39,7 @@ def calculate_growth(portfolio, next_market, current_market):
     # Calculate end value using next market, handling missing stocks
     total_end_value = 0
     for factor_portfolio in portfolio:
-        for inv in portfolio.investments:
+        for inv in factor_portfolio.investments:
             ticker = inv["ticker"]
             end_price = next_market.getPrice(ticker)
             if end_price is not None:
