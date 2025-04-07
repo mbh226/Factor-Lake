@@ -2,8 +2,11 @@ from MarketObject import MarketObject, load_data
 import pandas as pd
 
 class Factors:
-    @staticmethod
-    def Momentum6m(ticker, market):
+    def get(ticker, market):
+        return "Factor not specified"
+
+class Momentum6m(Factors):
+    def get(self, ticker, market):
         ticker_data = market.stocks.loc[market.stocks['Ticker'] == ticker]
 
         #check to see if results are empty - molly
@@ -18,6 +21,37 @@ class Factors:
             print(f"Error accessing 6-Mo Momentum % for {ticker}: {e}")
             return None
 
+class ROE(Factors):
+    def get(self, ticker, market):
+        ticker_data = market.stocks.loc[market.stocks['Ticker'] == ticker]
+
+        #check to see if results are empty - molly
+        if ticker_data.empty:
+            print(f"{ticker} - not found in market data for {market.t} - SKIPPING")
+            return None
+        #column in excel sheet is called: 6-Mo Momentum %
+        try:
+            value = ticker_data['ROE using 9/30 Data'].iloc[-1]
+            return value
+        except (KeyError, IndexError) as e:
+            print(f"Error accessing 6-Mo Momentum % for {ticker}: {e}")
+            return None
+
+class ROA(Factors):
+    def get(self, ticker, market):
+        ticker_data = market.stocks.loc[market.stocks['Ticker'] == ticker]
+
+        #check to see if results are empty - molly
+        if ticker_data.empty:
+            print(f"{ticker} - not found in market data for {market.t} - SKIPPING")
+            return None
+        #column in excel sheet is called: 6-Mo Momentum %
+        try:
+            value = ticker_data['ROA using 9/30 Data'].iloc[-1]
+            return value
+        except (KeyError, IndexError) as e:
+            print(f"Error accessing 6-Mo Momentum % for {ticker}: {e}")
+            return None
 
 #Creating an Example
 if __name__ == "__main__":

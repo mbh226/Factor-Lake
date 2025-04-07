@@ -1,4 +1,4 @@
-from FactorFunction import Factors, Momentum6m
+from FactorFunction import Factors, Momentum6m, ROE, ROA
 from MarketObject import MarketObject, load_data
 from CalculateHoldings import rebalance_portfolio
 import unittest
@@ -12,9 +12,9 @@ class TestFactorLakePortfolio(unittest.TestCase):
         self.start_year = 2002
         self.end_year = 2023
         self.initial_aum = 1
-        self.expected_final_value = 4.39
-        self.expected_growth = 339.42
-        self.factors = [Momentum6m()]
+        self.expected_final_value = 5.28
+        self.expected_growth = 428.07
+        self.factors = [Momentum6m(), ROE(), ROA()]
 
     def test_portfolio_growth(self):
         portfolio_values = rebalance_portfolio(self.data, self.factors, self.start_year, self.end_year, self.initial_aum)
