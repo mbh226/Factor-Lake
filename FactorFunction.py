@@ -6,7 +6,7 @@ class Factors:
         return "Factor not specified"
 
 class Momentum6m(Factors):
-    def get(ticker, market):
+    def get(self, ticker, market):
         ticker_data = market.stocks.loc[market.stocks['Ticker'] == ticker]
 
         #check to see if results are empty - molly
@@ -22,7 +22,7 @@ class Momentum6m(Factors):
             return None
 
 class ROE(Factors):
-    def get(ticker, market):
+    def get(self, ticker, market):
         ticker_data = market.stocks.loc[market.stocks['Ticker'] == ticker]
 
         #check to see if results are empty - molly
@@ -38,7 +38,7 @@ class ROE(Factors):
             return None
 
 class ROA(Factors):
-    def get(ticker, market):
+    def get(self, ticker, market):
         ticker_data = market.stocks.loc[market.stocks['Ticker'] == ticker]
 
         #check to see if results are empty - molly
