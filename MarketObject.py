@@ -7,7 +7,6 @@ import numpy as np
 def load_data():
     file_path = '/content/drive/My Drive/Cayuga Fund Factor Lake/FR2000 Annual Quant Data FOR RETURN SIMULATION.xlsx'
     rdata = pd.read_excel(file_path, sheet_name='Data', header=2, skiprows=[3, 4])
-    rdata = rdata.replace('--', None)
     return rdata
 class MarketObject():
     def __init__(self, data, t):
@@ -24,6 +23,7 @@ class MarketObject():
             data['Year'] = data['Date'].dt.year
         keep_cols = ['Ticker', 'Ending Price', 'Year', 'ROE using 9/30 Data', 'ROA using 9/30 Data', '6-Mo Momentum %']
         data = data[[col for col in keep_cols if col in data.columns]].copy()
+        data[['ROE using 9/30 Data', 'ROA using 9/30 Data']] = data[['ROE using 9/30 Data', 'ROA using 9/30 Data']].replace('--', None)
         self.stocks = data
         self.t = t
     def getPrice(self, ticker):
