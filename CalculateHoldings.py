@@ -3,6 +3,7 @@ from MarketObject import MarketObject
 from FactorFunction import Factors
 from portfolio import Portfolio
 import pandas as pd
+import numpy as np
 
 def calculate_holdings(factor, aum, market):
     # Factor values for all tickers in the market
@@ -57,11 +58,11 @@ def calculate_growth(portfolio, next_market, current_market):
 
 def rebalance_portfolio(data, factors, start_year, end_year, initial_aum):
     aum = initial_aum
-    initial_portfolio = Portfolio(name="Initial Portfolio")
     years = []
-    portfolio_values = []
+    portfolio_returns = []  # Store yearly returns for Information Ratio
+    benchmark_returns = []  # Store benchmark returns for comparison
 
-    for year in range(start_year, end_year + 1):
+    for year in range(start_year, end_year):
         print(f"\nRebalancing Portfolio for {year} based on factors...")
         market = MarketObject(data.loc[data['Year'] == year], year)
         
@@ -74,30 +75,77 @@ def rebalance_portfolio(data, factors, start_year, end_year, initial_aum):
             )
             yearly_portfolio.append(factor_portfolio)
         
-        if market.t < end_year:
+        if year < end_year:
             next_market = MarketObject(data.loc[data['Year'] == year + 1], year + 1)
             growth, total_start_value, total_end_value = calculate_growth(yearly_portfolio, next_market, market)
+            
             print(f"Year {year} to {year + 1}: Growth: {growth:.2%}, Start Value: ${total_start_value:.2f}, End Value: ${total_end_value:.2f}")
             aum = total_end_value  # Liquidate and reinvest
-        
-        # Track values for plotting
+            
+            # Append annual return (growth) to portfolio_returns
+            portfolio_returns.append(growth)
+
+            # Get benchmark return for the year (replace it as needed)
+            benchmark_return = get_benchmark_return(year)  # Define this function based on benchmark data
+            benchmark_returns.append(benchmark_return)
+
         years.append(year)
-        portfolio_values.append(aum)
 
     # Calculate overall growth
     overall_growth = (aum - initial_aum) / initial_aum if initial_aum else 0
     print(f"\nFinal Portfolio Value after {end_year}: ${aum:.2f}")
     print(f"Overall Growth from {start_year} to {end_year}: {overall_growth * 100:.2f}%")
+    
+    # Calculate and print Information Ratio
+    information_ratio = calculate_information_ratio(portfolio_returns, benchmark_returns)
+    if information_ratio is not None:
+        print(f"Information Ratio: {information_ratio:.4f}")
+    else:
+        print("Information Ratio could not be calculated due to zero tracking error.")
+    
+    return portfolio_returns, benchmark_returns, aum
 
-    # Plot the portfolio value over time
-    plt.figure(figsize=(10, 5))
-    plt.plot(years, portfolio_values, marker='o', linestyle='-', color='b', label='Portfolio Value')
-    plt.xticks(years, rotation=45)  # Ensures all years are displayed properly
-    plt.xlabel("Year")
-    plt.ylabel("Portfolio Value ($)")
-    plt.title("Portfolio Growth Over Time")
-    plt.grid(True)
-    plt.legend()
-    plt.show()
+def get_benchmark_return(year):
+    """
+    This function should return the benchmark return for the given year.
+    """
+    # Data from Factset (September)
+    benchmark_data = {
+        2002: 34.62, 2003: 17.48, 2004: 16.56, 2005: 8.65, 2006: 11.01,
+        2007: -15.63, 2008: -11.08, 2009: 11.89, 2010: -4.73, 2011: 30.01,
+        2012: 28.22, 2013: 2.6, 2014: -0.09, 2015: 13.71, 2016: 19.11,
+        2017: 13.8, 2018: -10.21, 2019: -1.03, 2020: 46.21, 2021: -24.48, 2022: 7.23
+    }
+    return benchmark_data.get(year, 0)
 
-    return initial_portfolio
+def calculate_information_ratio(portfolio_returns, benchmark_returns):
+    """
+    Calculates the Information Ratio (IR) for a given set of portfolio returns and benchmark returns.
+    
+    Parameters:
+        portfolio_returns (list or np.array): List of portfolio returns over time.
+        benchmark_returns (list or np.array): List of benchmark returns over time.
+    
+    Returns:
+        float: The Information Ratio value.
+    """
+    # Ensure inputs are numpy arrays for mathematical operations
+    portfolio_returns = np.array(portfolio_returns)
+    benchmark_returns = np.array(benchmark_returns)
+
+    # Calculate excess returns
+    active_returns = portfolio_returns - benchmark_returns
+    
+    # Calculate the mean excess return (numerator)
+    mean_excess_return = np.mean(active_returns)
+    
+    # Calculate tracking error (denominator)
+    tracking_error = np.std(active_returns, ddof=1)  # Use sample std deviation
+
+    # Prevent division by zero
+    if tracking_error == 0:
+        return None  # Or return float('nan') to indicate undefined IR
+    
+    # Compute Information Ratio
+    information_ratio = mean_excess_return / tracking_error
+    return information_ratio
