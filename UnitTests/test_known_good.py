@@ -1,4 +1,4 @@
-from FactorFunction import Factors
+from FactorFunction import Factors, Momentum6m
 from MarketObject import MarketObject, load_data
 from CalculateHoldings import rebalance_portfolio
 import unittest
@@ -14,9 +14,10 @@ class TestFactorLakePortfolio(unittest.TestCase):
         self.initial_aum = 1
         self.expected_final_value = 4.39
         self.expected_growth = 339.42
+        self.factors = [Momentum6m()]
 
     def test_portfolio_growth(self):
-        portfolio_values = rebalance_portfolio(self.data, self.start_year, self.end_year, self.initial_aum)
+        portfolio_values = rebalance_portfolio(self.data, self.factors, self.start_year, self.end_year, self.initial_aum)
         final_aum = portfolio_values[-1]
 
         self.assertAlmostEqual(
