@@ -4,9 +4,9 @@ from FactorFunction import Factors
 from portfolio import Portfolio
 import pandas as pd
 
-def calculate_holdings(aum, market):
+def calculate_holdings(factor, aum, market):
     # Factor values for all tickers in the market
-    factor_values = {ticker: Factors.Momentum6m(ticker, market) for ticker in market.stocks['Ticker']}
+    factor_values = {ticker: factor(ticker, market) for ticker in market.stocks['Ticker']}
     
     # Remove None values from factor_values
     factor_values = {ticker: value for ticker, value in factor_values.items() if value is not None}
@@ -31,28 +31,31 @@ def calculate_holdings(aum, market):
 
 def calculate_growth(portfolio, next_market, current_market):
     # Calculate start value using the current market
-    total_start_value = portfolio.present_value(current_market)
+    total_start_value = 0
+    for factor_portfolio in portfolio:
+        total_start_value = factor_portfolio.present_value(current_market)
 
     # Calculate end value using next market, handling missing stocks
     total_end_value = 0
-    for inv in portfolio.investments:
-        ticker = inv["ticker"]
-        end_price = next_market.getPrice(ticker)
-        if end_price is not None:
-            # Use next year's price for growth calculation
-            total_end_value += inv["number_of_shares"] * end_price
-        else:
-            # Stock missing in next market, liquidate at entry price
-            entry_price = current_market.getPrice(ticker)
-            if entry_price is not None:
-                total_end_value += inv["number_of_shares"] * entry_price
-                print(f"{ticker} - Missing in {next_market.t}, liquidating at entry price: {entry_price}")
+    for factor_portfolio in portfolio:
+        for inv in portfolio.investments:
+            ticker = inv["ticker"]
+            end_price = next_market.getPrice(ticker)
+            if end_price is not None:
+                # Use next year's price for growth calculation
+                total_end_value += inv["number_of_shares"] * end_price
+            else:
+                # Stock missing in next market, liquidate at entry price
+                entry_price = current_market.getPrice(ticker)
+                if entry_price is not None:
+                    total_end_value += inv["number_of_shares"] * entry_price
+                    print(f"{ticker} - Missing in {next_market.t}, liquidating at entry price: {entry_price}")
 
     # Calculate growth
     growth = (total_end_value - total_start_value) / total_start_value if total_start_value else 0
     return growth, total_start_value, total_end_value
 
-def rebalance_portfolio(data, start_year, end_year, initial_aum):
+def rebalance_portfolio(data, factors, start_year, end_year, initial_aum):
     aum = initial_aum
     initial_portfolio = Portfolio(name="Initial Portfolio")
     years = []
@@ -62,10 +65,14 @@ def rebalance_portfolio(data, start_year, end_year, initial_aum):
         print(f"\nRebalancing Portfolio for {year} based on factors...")
         market = MarketObject(data.loc[data['Year'] == year], year)
         
-        yearly_portfolio = calculate_holdings(
-            aum=aum,
+        yearly_portfolio = []
+        for factor in factors:
+            factor_portfolio = calculate_holdings(
+            factor=factor,
+            aum=aum / len(factors),
             market=market
-        )
+            )
+            yearly_portfolio.append(factor_portfolio)
         
         if market.t < end_year:
             next_market = MarketObject(data.loc[data['Year'] == year + 1], year + 1)
