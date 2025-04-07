@@ -7,7 +7,7 @@ import numpy as np
 def load_data():
     file_path = '/content/drive/My Drive/Cayuga Fund Factor Lake/FR2000 Annual Quant Data FOR RETURN SIMULATION.xlsx'
     rdata = pd.read_excel(file_path, sheet_name='Data', header=2, skiprows=[3, 4])
-    rdata = pd.replace('--', None)
+    rdata = rdata.replace('--', None)
     return rdata
 class MarketObject():
     def __init__(self, data, t):
