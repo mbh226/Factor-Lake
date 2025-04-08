@@ -12,15 +12,14 @@ from fds.sdk.utils.authentication import ConfidentialClient
 # Update the file path to match the cloned Git repository location
 config_file_path = "/content/factor-lake/FactSet_Colab_Test-config.json"
 
-# Load the JSON configuration file
 with open(config_file_path, "r") as config_file:
     config_data = json.load(config_file)
 
-# Authentication
+# Authentication with corrected key names
 configuration = fds.sdk.FactSetPrices.Configuration(
     fds_oauth_client=ConfidentialClient(
-        client_id=config_data["client_id"],
-        client_secret=config_data["client_secret"],
+        client_id=config_data["clientId"],  # Corrected to match JSON key
+        client_secret=config_data["clientSecret"],  # Ensure the key name is correct
         base_url=config_data["base_url"]
     )
 )
