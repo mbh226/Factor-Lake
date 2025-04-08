@@ -9,7 +9,11 @@ from fds.sdk.FactSetPrices.models import *
 from fds.sdk.utils.authentication import ConfidentialClient
 
 # Load credentials from the JSON file
-with open("FactSet_Colab_Test-config.json") as config_file:
+# Update the file path to match the cloned Git repository location
+config_file_path = "/content/factor-lake/FactSet_Colab_Test-config.json"
+
+# Load the JSON configuration file
+with open(config_file_path, "r") as config_file:
     config_data = json.load(config_file)
 
 # Authentication
@@ -27,10 +31,10 @@ with fds.sdk.FactSetPrices.ApiClient(configuration) as api_client:
     api_instance = prices_api.PricesApi(api_client)
 
     prices_fixed_income_request = PricesFixedIncomeRequest(
-        ids=FixedIds(["037833BX"]),
-        start_date="2019-01-01",
-        end_date="2019-12-31",
-        frequency=FrequencyFi("M"),
+        ids=FixedIds(["037833BX"]),  # Replace with relevant security IDs
+        start_date="2019-01-01",     # Replace with desired start date
+        end_date="2019-12-31",       # Replace with desired end date
+        frequency=FrequencyFi("M"),  # Frequency: "M" for monthly
     ) 
     
     # Send Request
