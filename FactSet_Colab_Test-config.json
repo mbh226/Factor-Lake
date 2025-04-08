@@ -1,7 +1,7 @@
 {
   "name": "FactSet_Colab_Test",
-  "clientId": "25cab8d2875f44c3b415c8aaf2fd3a1b",
-  "clientAuthType": "Confidential Client Application - Machine Authorization",
+  "clientId": "46fd28329bb64845b94fa1123030b94c",
+  "clientAuthType": "Confidential Client Application - User Authorization",
   "owners": [
     "CORNELL-1992178"
   ],
@@ -9,15 +9,18 @@
     "kty": "RSA",
     "use": "sig",
     "alg": "RS256",
-    "kid": "ae68487223114e6cadd2c2a7e485c207",
-    "d": "FBjyQ8fUE1bvec0rwUtxFG6559bLh7sKO-voZpwcUbZ6PIydMyo1vU7I2Oc-9GUSqKu7ZZf37LQ1DqB-f29JeTXq8KvtY3M-LygMBmpFxvgKEmbSUkg0ayB1O2VoNxdksEWg4oDC5XKwJ8poDtSSnSNsiIiVYxOzXBOLwDtT74s56GLmQNL0jhsztUlh5aEykPkQvuQyHxoCRlG848Nd7zTlwzw4wAx9HC_8ZMB3fzLRCN9HVM4aquSdsb5dWdfbwFjOz-_ZTdpOWohddnfrcCUw930Ska8XdJsU41kNkxHzfDZuA0pwVMl2A2h6wIxH0fa4ZrPR59llvZptTuUVgQ",
-    "n": "oV98anSMHLL-VFQ7a25KZLzjyhMM0DfD_3CcJog3IkaBsc1-pPXtyxKSpv1MVK-dETNAlyiiPXqxHLdU3v9WpTYD2FG9HE-XsWgrHBy8eqF_u0a4FWhHXY64q_ZT0pJHYDzCNyDZ_grW_WIKs-26bHX7--UWIgibkA5MBX3HQciMyxlDQ874EfpYCC2CYkURlDkZz3YX4Pa98fclq2d_MM01Mo_XsRV0knGAv2mkrCXFrJLQh8eEfd5KcF6YG1gXqLbtcYIEqF5ha3XunVJ31t_KMdLmaIWIGzZxhaGJFneYFNtGFRBEK1PXfXYVji9YAjCFXnTWC59257ud2jdCIQ",
+    "kid": "423d1f9d9f454d7c965c6446c0542900",
+    "d": "W5AcNp2Ady8d8jhR0PaHIf3Q11R-l1JSTJ--emoam7M4Fz00ueUPCP9tyTDkmkMDqA1_FtVIZpqzfxtHG0pK0TJQuH2GGckfkYnDC5go9EhvJR7TcPDHp-CKLYmb9ioaNhQUlORJbh-wlnPjtgo6vs7i0qdDXNH2UU5LEcVU4Dp981Hs0aaqNbMjnKo0zTse7byGCLiK9B8CLuFwoGl1IKW--mZ3mwaM_mywHNyHFrdOGw1TdW-HcFVI-CJNMns6jXiDO0lFlCcCe5wIuSpk2rIfZGfr9p1H15T2U7In9QTlahfmy3a2qqV14sXnYh4Tt0D0yGMR9iMvRDMFTcLG4Q",
+    "n": "kSuZL5LyAfquTuos8gfHeN8R6u1CUKpL_uwzfaZ0Eh690qY_qPXMqL3M0tssnDavXAM3Ek8rIN4fxQicG6emMjiXrNowNASEWggnXz7mqQ6JuHG1rkbNw-ckG0X3k287NSbCxKZ2IXMvQS39yExnTuLT9r962Qp5NTDHkYRG-7EKrYWxe4QTpR_LafezcFC50P__J2COXmMe8kGGafWhp42bICF9dpqjPm1pPvT_CLQvtet73aBupyjqYLUnIBp3NvTe5HeSTkjCOvyh93HpRWhZlXQNFFsJCUND9SEh5Z5lnODDy0ub7S0kzaWxE0ezB7MxRfe2yhUx_1i7SxNTkQ",
     "e": "AQAB",
-    "p": "0Nco79OtH7hrWwZN4lQrn8AmWxVe_EHsQjkdYhr3vFkKNbklZ8iSMnqxZEoSn1I-w_NZU8gfB3zoKYPSzgquqJibGAwJH93UIP361UJxsJMImbLMazdlnfzm0xdG1t9pkURWD73ip6zpoyT9CtgNDnwmiF9H-fdq6GHWLQGDb8k",
-    "q": "xdBIcO3-K99eYOuiDNwBugZk3fe5W6Cq9ynzsjQnMTqpD2dJkTWRlkE-Pg7wIuhJ_Kb127gF2L7-A54x3QDA2EEVRfkN9p2jRjw3KbOI1ZC6PHTMlHLAJzoFTM5lNLBjkpI7f23vVSG09AU3C461EC5Tbu6bjv6V3Qd9mDMFW5k",
-    "dp": "lH7pVN6m009GxsqMxsoi2sy-eTWQ_L3DSLNj-UZDsWF-qQSlXE555frn9-_TngXVK2_1rGU36xMd4aciVe-ykZ8xaL_mHQqWs37kxI8iV_O0wdUpFXOmhdg2KRL8A_2ICwsURs02RRPmbWL3qqZFYm9U1tMpUsxi8CnhKM9SrkE",
-    "dq": "axT-MgvTfMJ1H7hOx_FNCfuuHK6ea6iFBDl0j3JGCRM9M3ZxT6cVAaad4BBMFEl0y81B6Egs-hEiBqlbSsy-mBJbRr60vVzGZx3vqqZim2G2P0Xm_TFFLbbt6Y8NIEGgFVcN2ESVu5r8juBH1PzSrUi2p6WJFhZg3_7PEVYFP3k",
-    "qi": "cmWzTFY6Z-Eq-S8nF9WqPkVprw6OKYkyA9eqbc5ylc5UcHA9RNNguo2vEeCdgy0S_lhffovcQpa6o20Vi49Xvk_EqiHWKhEDCdtogM9XdugTZufwWGNKcKYf2p1xwWX8G1m4A1VTLjmNArcV-SKh4tDh3vjBGGr5plQk9YKx_FA"
+    "p": "1hnSvr3CbF_r8JNb2y85Pvn2TOkQGzOcbTG8O7iLrIyZcKM3dJdVB4wWf-PmRRNXOvRMt21_DZep-NhcTPj0XnNZdMu3gQpq7V21sTtjkZ36m6yKE13vO0j5y3Vo2Lc6f6XXZqlzhTdL-3jK6Dju3XG6HTt-dgeiLe7isiJO0sc",
+    "q": "rZRxZijNUniySTnpLPri_FiHEmDOeFcoD6c67XAAV6M8G5-clUYjnrzVKWh0ncv0Cf8iUaybR5hcJ5o2b03Kmuo7vQMFhkHbNsyKPtXM2x2M_e5q8HTqJ0x4WnhvCRMo7KjroZUzYyZ4Xr1fGz8WjmfqorkFsvQpKPqyUq3xzuc",
+    "dp": "efFFTixoYy-TA3f6tnFEKrFV7mJEMSoJK0xLiLxImWOPNU9RE4_p9x175yWXjrpAUay5UTQFTGmYfspEb_bPwEf0qIgrIU0cr8tS4_oOcO7IwQfZsMQssNiUpaRerihWIkQD1k4nJLXlCfq3nuJmciwHNAUhtvoMDhtkdM8DlBs",
+    "dq": "LvbvB7kadKn7cxycHnNzXtuFEE_pDV5nlHSm2P9o2E1uQfsZnrnvgU-OTTnZ86fvS5UgcADHssNii8SJ3euqWefuaeGbaQwAh_8nmIC4gMCqGTqc7Jp1kFR8a94SDN6GQCIkPv_je3w5LUkHppOXQsiTD5wIErdFO7U48m3l8xk",
+    "qi": "XXL6HYBDtXENEqwURn_q8Hmih3b-Aj3apl53Qq6iun0OA_fE3UDqVZv36_M-BUMFERzraYjaDwV9kXTdtO_G7JhWsrst3vSpUURab6Se1j7b0tebQmkll3cUc8qILR6L4WStM8ThrbRXepj7-GIM5a-pbm1IJ7J7bD1TB0qbzA0"
   },
+  "redirectUris": [
+    "http://localhost:8080"
+  ],
   "wellKnownUri": "https://auth.factset.com/.well-known/openid-configuration"
 }
