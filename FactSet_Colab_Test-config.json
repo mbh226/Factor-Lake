@@ -1,10 +1,24 @@
 {
   "name": "FactSet_Colab_Test",
-  "clientId": "9721556e29024fbe8b56f18936f1ed45",
-  "clientAuthType": "Public Client Application - User Authorization",
+  "clientId": "73d84bd8aedb4b849c963749516242b7",
+  "clientAuthType": "Confidential Client Application - User Authorization",
   "owners": [
     "CORNELL-1992178"
   ],
+  "jwk": {
+    "kty": "RSA",
+    "use": "sig",
+    "alg": "RS256",
+    "kid": "75e9d43f8bc944799a91ccf090b97916",
+    "d": "Y84RLVhGkyz4NCMX3UXqatBzfDRDE-0pJfUG0R2WPfh3RUMyOqmVEundd-gBI6W1VJztuWEKaBN8XGS7eQR_Htm7a7BBuFzgy1QHwLVMJMONKrfAfWnWan8eQE9iVSeh-6Pg1DTAB8dCHIl0cS3-JIn0m_m06_Zy_goWEsbRhFnrzgIXDPu0u0MNiFIuYT-d5Pd1hrXtFYi0EajewOybYkKKZrWGvJE9uYEIYtjDeIEWAEcZsr0sL4D0QrbRUYdCH9V6HwhfNxI8d9Td9OKvAgyeRAzMDWQhzmDIcnYOYJjz2vMmtb-eKpZ6PfidKXYVDUVsTyUtV8gFuum00W2UGQ",
+    "n": "ryrLGp34I7qdnvWIA3CofdYLgieGdnuBrxN7gc1p-tJpOE8xp7XmwrWVZ8yPzbLMI3kta93UXTI1IZD6MQSu9DGDlAGZpet0Vh0aaBBEhEI9WNKFPgovu17zQFMqGtHED-sGUJDSeYUW8dqIhAfdoQV1S1b_oma0mNzkfm0Fm_M47LIp3WpD9_pkFg_KhJmdtMQAU5hGDwWcGiNMM27pbwKDleWa2ZWqd-wOCnAUFMeN1W10gZACsaBLk9bfgDUlTcJBaU7w_Bu0KDZi3UiijPOH77YFa6tK4KIdvjPrEnNqgZA6VzTWOt7W44acoMt_cTXyHgvD1Oxu8Gpg06OMMw",
+    "e": "AQAB",
+    "p": "9i4bRbqKArtFew37wu8dPMseD6Zg_lG_G5XVs53ola3qP8F687DEbN68JCvxryxmKkyzBu0IzUShAloPLRbpnDQUl-7dnn2eSv0z7bmZSicRFVDNJ-fZpFIYx-y-81_r9EfqsIzEyGO9jrNGevkVydJN6V2XWFYb1W9xm2vYHBU",
+    "q": "tieH53QzTODeZU9MLh34SAI3e-iY4wFAYC7Dt67f77WeadfUzdpB9ClYKE_dsY2SiLsW-wri7p13X2nDSBcXQY9hXyib9pVEtc7MM-bkCEigeQv9pPJr13LJilabBJvuLZ3kIikA449Dhw1wJes68nhFZEBaHjJ-ijIEo-aKcSc",
+    "dp": "XkAquth_LCqMoF8rK2emlvbg7HbznYqokyQbbCghuuSZ0Yz-yLu9iD0CZQrZ_goOl1VEGXu4qfYDesYGF2o1SFN8KusNuDc52lX0gqhTMtugI7wKv6N5ZPr1d92BAeaQjLbX-H38fQgKs86ZRk2E9P7qS1VEs1JMV7vSEAIK_D0",
+    "dq": "Pxy1PuGJAMMM60ctWvExXCnAdaMijcyaNHkfgN4LYu-ngn6wkd5kaaeFjvoVEva9ZbiE_thHxmsyuBFaAvlVKnb2QtU8LJSNaPzMzdLbAW_AghBAgs0nxk9UOyVEsrUgMhf5ukhAsZeqyvlB-TFmjCpVyKVvU_Uk2Nb5upwfLZM",
+    "qi": "p9-EPQF5n5yCakZDo4YOhL58I_oReqtoH-6FU6u4p48XgdJLiKJ0hP7l_BlHf7fBk4_fBYEBuIqITWTUtR89fbMEUgHbummRH5eXAj6wC5CcZSO4uSMImUa2FXn6HFqCaJcLswRKfdhvpmkFP4bLYO3NO_Uj9-X9D7wk3rjRI_s"
+  },
   "redirectUris": [
     "http://localhost:8080"
   ],
