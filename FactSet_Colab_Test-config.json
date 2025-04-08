@@ -1,23 +1,12 @@
 {
   "name": "FactSet_Colab_Test",
-  "clientId": "14b5b14cdbc5462889c665c5fdb7ce1e",
-  "clientAuthType": "Confidential Client Application - Machine Authorization",
+  "clientId": "9721556e29024fbe8b56f18936f1ed45",
+  "clientAuthType": "Public Client Application - User Authorization",
   "owners": [
     "CORNELL-1992178"
   ],
-  "jwk": {
-    "kty": "RSA",
-    "use": "sig",
-    "alg": "RS256",
-    "kid": "cc5ce0b7617b4106afa7c2991f5faaa9",
-    "d": "WYrAs6llydGMmDAYiXmf24Yoiwp8llYDrCrjDdFyVBPeKCcKmPfLs_AJoM-LxfE9agQLSFhtl2fHtKk2TRDrrjnUsrT_QxYcRCPmb6OEZBeg-Lb7aV2f8w8tqDrJDD6u56yqkdJ_RMfupw-ZESSmv7BzcWityiKCr09bgtQwBMMoLQzBip2CUcdMn27RB9WsQUSwEIIp-Glyy2bmNZGgY-aILB1tM8E4SkQvLffGRRrCuCu1_lAn-CRHJ6obcoAV75-UbLyv4rL0g1Fwg3hMiRjS-0ZUStcDnCfAElM5DPZliv8d4EDyZlwN6n8Jf8tGkhOPJr-Dxng4XUsbXBNLNQ",
-    "n": "ohzTyBbd9PLmAis-Upoxjf_JzvvqtHQxfcQCd075aZ86aG8UE9jMJzSXbpuLzZkKfyasAiXZV9nq_80os5EzbcLnf894uh3wN48XnDanG-nUZXgQA3VelDWN7JVXfsc2dtIun0iWfMmFLiHutQNt3cBqmkUWhBfhhLFNIsVfNAPflhbf9f5EfJ1hTXGla3Jgl-RfeA5VA5tYrNwRXd2wkgGjhx5k8f2Dacku3BjQjTucSRVvvl-AjQXjuzIJEGT_56iH75jejvTiizwv1oe3BgJmyy6BYutr_sYHe3F6XP9X_Cg0T8hLTVray7-pB5UC-q7g8O-DDu2GY3hq37o0BQ",
-    "e": "AQAB",
-    "p": "5oDxVg_VlaEtPM8yI4VpcKZSwI8hz3TT8gVddZxN0C2IVmVnaRa6bHm3OUSDKZ2YY3oqKx-ud1Ox2KwtY1eRRKsgS4H8LcnSyTvGzrXLSmH5lR8w9XDqS_hrzj-zdEPrSSuNw8zBFAfNuUA3xmbDVTgVWdeN1wCB8Oksrxva1lc",
-    "q": "tAtJ6bcYIo2ppj0BbtspBbuhhfrHdgCWAGE6qcie_V6wgUTk0oiNRIcTW0BWYIcl9qvWuQEBdP_YXZqKR4hUmgkO8YpS3H5dWMQDRgkd57DqyJrU3UlXdtUoLFycZpn2dTjTdktLfAt-bvVilmSd1pk8DFV0IFlFQTYDHQSrNwM",
-    "dp": "yXECeE3aQKvc1vnUPYrIPPR9-V6dE6pr12Ss6q2wqzA_qBFysDp2rXopj9i6L9JUbQtEcu97DzmLgWnnOJw8jiBnVtXAR1vL5KVi9x-VC-pXreTWaolFmSL_Q_4TnJYGt6lieS0lx5WSSkU--RqxtnYO4rcodC8zYBDHRjk3pH0",
-    "dq": "nkRWIvbqZmV1PkbeXZ6V_w4jPO1oLRjywz61HM7YxA1axyfSpieXVygOIeb6hzwGaUJBLLvvlfPZNN9Gsv7qr8VKt5VKpb0HPaKA5i3ZdfQVT2abvDJein1yJRz7901cU0syyAgEQPSxncRjd6TXAvAM0yLDRDR1Jo_eSMHz6BU",
-    "qi": "XZCAYB0T5PwAmm-qIHdxGJjcAU9zwDvWorMbyxBM_TBVF0xq5_xbwjgFZ08602LLMN5ybaDw07duyyDsYfg-X_YwDkuJa6Z299lZ5hoAARBNwCQgTHjMDh8OZKPpt6-wjl7ny_n8iD27t8s64M2O6uOkdkIv573vcTGmLKEerLQ"
-  },
+  "redirectUris": [
+    "http://localhost:8080"
+  ],
   "wellKnownUri": "https://auth.factset.com/.well-known/openid-configuration"
 }
