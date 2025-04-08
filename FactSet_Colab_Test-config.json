@@ -1,6 +1,6 @@
 {
   "name": "FactSet_Colab_Test",
-  "clientId": "b85bc6ec64fc404999872879393f94b2",
+  "clientId": "25cab8d2875f44c3b415c8aaf2fd3a1b",
   "clientAuthType": "Confidential Client Application - Machine Authorization",
   "owners": [
     "CORNELL-1992178"
@@ -9,15 +9,15 @@
     "kty": "RSA",
     "use": "sig",
     "alg": "RS256",
-    "kid": "ae0df82f28b4413b9fc102d65df1f703",
-    "d": "VKOMrUE5RqZuSrYIbmc-Ob-2wwH0rPlWIvhDbr2iC3H4ZVe3ZzP3TtBhiZmBwhtibomrMKbUnYFzwssY_WmisYyUI3ECAQ1RcSouZ7fBdXV2jWoTZna6FQmFAgVQ0tot2fn0xcgWr55z1VP7jPt1CDlYv74xncZxWZYeaK89YIOWQgNe38de-vc2D7Q8WwUiC2rnzXNQnTjvBiOWTa1tax9uJrK9mrfb4sVEsrtDI6XyTUo-gYcJQPsI51myYPrjiA75fPi6-OxbwNwm1itpAgO40fxIqmoXN4Em-ldFAuQGNuuhogHubLfJDyZXmnSAHklSMmUzGlXYnjA47UsaWQ",
-    "n": "yyJHDOiFWOFrKAF0VkiMe4qrMTJeSFYz_vj2lnB8u8w_x8Bx_QzlL45N_7W1F06rcnpIkIrMNPf_EJebzlZ0yODTWPzfeqUwq2gpCtRaKQh8AB5OqQyTq8W1FyGBHzMb7eLLfSJ50IR7EknmrZhGwjazw6dAVuyrj4itKWMHCctF59CQjSPEunbRY3lb5DbEvZbRfmBPbt3Wb5PqBAZBrsrfFfJ22Jknufw-XZoQ2ok4yihkn1e3QN284bbRnGEFSPS7CXkhGEJANLtw--Qxod4s4-RUv_m3P6Ow36Qyp1gVBUICRhTX0YvWauTIIfgTIMEb0gS0t9RRx2SAhqpgYw",
+    "kid": "ae68487223114e6cadd2c2a7e485c207",
+    "d": "FBjyQ8fUE1bvec0rwUtxFG6559bLh7sKO-voZpwcUbZ6PIydMyo1vU7I2Oc-9GUSqKu7ZZf37LQ1DqB-f29JeTXq8KvtY3M-LygMBmpFxvgKEmbSUkg0ayB1O2VoNxdksEWg4oDC5XKwJ8poDtSSnSNsiIiVYxOzXBOLwDtT74s56GLmQNL0jhsztUlh5aEykPkQvuQyHxoCRlG848Nd7zTlwzw4wAx9HC_8ZMB3fzLRCN9HVM4aquSdsb5dWdfbwFjOz-_ZTdpOWohddnfrcCUw930Ska8XdJsU41kNkxHzfDZuA0pwVMl2A2h6wIxH0fa4ZrPR59llvZptTuUVgQ",
+    "n": "oV98anSMHLL-VFQ7a25KZLzjyhMM0DfD_3CcJog3IkaBsc1-pPXtyxKSpv1MVK-dETNAlyiiPXqxHLdU3v9WpTYD2FG9HE-XsWgrHBy8eqF_u0a4FWhHXY64q_ZT0pJHYDzCNyDZ_grW_WIKs-26bHX7--UWIgibkA5MBX3HQciMyxlDQ874EfpYCC2CYkURlDkZz3YX4Pa98fclq2d_MM01Mo_XsRV0knGAv2mkrCXFrJLQh8eEfd5KcF6YG1gXqLbtcYIEqF5ha3XunVJ31t_KMdLmaIWIGzZxhaGJFneYFNtGFRBEK1PXfXYVji9YAjCFXnTWC59257ud2jdCIQ",
     "e": "AQAB",
-    "p": "-5RZ-N191MVWQagYL8uKZm-gOwf8uAhHL8uxCsFD8LiimOMoeYPuMw4t3lF5_5IXV1vTn6QnQs63nNJcS2vodZ83W05veciieE9vlULU5cT-cK_fBeXNT_tIiV4HskcJMds8l-ovcoZOBSQ4wNtYEi-qnYJCdCr7NKsxlZgmhj0",
-    "q": "zrQCYet1KXzwejemeIlrpMBr8yrYWHsYeNfa19LygvsUnzPNcjGZ9BMY4eO4Serh95mxuS4smC7MCwTlHZssYqxoJq9YXZl8Wy62Qbf4TrVyG1egJZsGyRHSbS0Ckml3ksjOFs3S4rbkLUqKQMYhwY9lvoEJ8lSbz9Bbibphix8",
-    "dp": "f3chwuLOH2DAnFGDt6uj-tSx1Vbtp3yiPMgycmWLe8rArz_gwPikVn_no42ah2_Inb1r0qXEMqg0BaPbmWcaB4Zc8Mkj2AtcriJpQbHz1lriI8wn7oAJb228ycS3l49ATF9tKvc_hQIhQ5-fla9MxyIZiuZ1rxAb6QqX-9h0JG0",
-    "dq": "MFdbA0mM0hIdL4gaT7Bb02EJHgqUJEVNmN1qmfUEsGtGDGGSF7XP-owI0rNuIyNii4SPUu6gkUrIf386kiz7OWx2wy1Y7jL6KV0IVOBQmx_GOuzIUGMsOBQJ8WyIYHN3-oUp5Z1nR4xcWtdG9BUiSeFeeyo0iE8PTY--CLzlGSM",
-    "qi": "dCemIJy2VPhQhgIx3PBHRD148MvI1EqRWNgFqTklNzjV7J5OtAU9s7pxR0eLhrDEuWpjURhziVcQljr20KLg9Nh_3jmFhr2WVab-WsSnVpG4Vzlxu4T-VGfOXr4kytW6PbswHlpF_jUCZ7MrBCVLBTcHA9Tc7IfiGgXNwz0bKXU"
+    "p": "0Nco79OtH7hrWwZN4lQrn8AmWxVe_EHsQjkdYhr3vFkKNbklZ8iSMnqxZEoSn1I-w_NZU8gfB3zoKYPSzgquqJibGAwJH93UIP361UJxsJMImbLMazdlnfzm0xdG1t9pkURWD73ip6zpoyT9CtgNDnwmiF9H-fdq6GHWLQGDb8k",
+    "q": "xdBIcO3-K99eYOuiDNwBugZk3fe5W6Cq9ynzsjQnMTqpD2dJkTWRlkE-Pg7wIuhJ_Kb127gF2L7-A54x3QDA2EEVRfkN9p2jRjw3KbOI1ZC6PHTMlHLAJzoFTM5lNLBjkpI7f23vVSG09AU3C461EC5Tbu6bjv6V3Qd9mDMFW5k",
+    "dp": "lH7pVN6m009GxsqMxsoi2sy-eTWQ_L3DSLNj-UZDsWF-qQSlXE555frn9-_TngXVK2_1rGU36xMd4aciVe-ykZ8xaL_mHQqWs37kxI8iV_O0wdUpFXOmhdg2KRL8A_2ICwsURs02RRPmbWL3qqZFYm9U1tMpUsxi8CnhKM9SrkE",
+    "dq": "axT-MgvTfMJ1H7hOx_FNCfuuHK6ea6iFBDl0j3JGCRM9M3ZxT6cVAaad4BBMFEl0y81B6Egs-hEiBqlbSsy-mBJbRr60vVzGZx3vqqZim2G2P0Xm_TFFLbbt6Y8NIEGgFVcN2ESVu5r8juBH1PzSrUi2p6WJFhZg3_7PEVYFP3k",
+    "qi": "cmWzTFY6Z-Eq-S8nF9WqPkVprw6OKYkyA9eqbc5ylc5UcHA9RNNguo2vEeCdgy0S_lhffovcQpa6o20Vi49Xvk_EqiHWKhEDCdtogM9XdugTZufwWGNKcKYf2p1xwWX8G1m4A1VTLjmNArcV-SKh4tDh3vjBGGr5plQk9YKx_FA"
   },
   "wellKnownUri": "https://auth.factset.com/.well-known/openid-configuration"
 }
