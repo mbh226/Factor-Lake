@@ -1,7 +1,6 @@
 pandas
 numpy
 scipy
-fds.sdk.utils
 fds.sdk.FactSetPrices==1.1.7
 fds.sdk.utils
 fds.sdk.OverviewReportBuilder
