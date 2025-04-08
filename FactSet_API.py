@@ -11,19 +11,10 @@ from fds.sdk.utils.authentication import ConfidentialClient
 # Path to configuration file
 config_file_path = '/content/factor-lake/FactSet_Colab_Test-config.json'
 
-# Load credentials
-with open(config_file_path, "r") as config_file:
-    config_data = json.load(config_file)
-
-#Authentication
+# Authentication
 configuration = fds.sdk.FactSetPrices.Configuration(
-    fds_oauth_client=ConfidentialClient(
-        client_id=config_data["clientId"],
-        client_auth_type=config_data["clientAuthType"],
-        base_url="https://api.factset.com/content"  # Explicitly set the production server
-    )
+    fds_oauth_client=ConfidentialClient(config_file_path)  # Pass the config file path directly
 )
-
 
 # Get fixed-income data
 with fds.sdk.FactSetPrices.ApiClient(configuration) as api_client:
