@@ -8,9 +8,16 @@ def get_factors(available_factors):
     
     # Get the number of factors user wants to use
     while(True):
-        num = input(f"How many factors do you want to use?")
-        if type(num) != int:
+        try:
+            num = int(input(f"How many factors do you want to use?\n"))
+            if num > len(available_factors):
+                raise Exception
+        except ValueError:
             print(f"Please input an integer.")
+            continue
+        except Exception:
+            print(f"Number is out of range.")
+            continue
         else:
             break
     
@@ -18,13 +25,19 @@ def get_factors(available_factors):
     factors = []
     for i in range(num):
         while(True):
-            selected_factor = input(f"Please input the index of factor {i + 1}: ")
-            if selected_factor != int:
+            try:
+                selected_factor = int(input(f"Please input the index of factor {i + 1}: \n"))
+                if selected_factor > len(available_factors):
+                    raise Exception
+            except ValueError:
                 print(f"Please input an integer.")
-            elif selected_factor > len(available_factors):
+                continue
+            except Exception:
                 print(f"Index is out of range.")
+                continue
             else:
                 break
+        
         match available_factors[selected_factor]:
             case "ROE using 9/30 Data":
                 factors.append(ROE())
