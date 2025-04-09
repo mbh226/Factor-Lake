@@ -3,7 +3,7 @@ from FactorFunction import Momentum6m, ROE, ROA
 def get_factors(available_factors):
     # Display the lists of available factors with index
     print(f"Available factors: ")
-    for i in len(available_factors):
+    for i in range(len(available_factors)):
         print(f"{i + 1}. {available_factors[i]}")
     
     # Get the number of factors user wants to use
