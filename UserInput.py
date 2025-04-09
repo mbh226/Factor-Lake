@@ -38,7 +38,7 @@ def get_factors(available_factors):
             else:
                 break
         
-        match available_factors[selected_factor]:
+        match available_factors[selected_factor - 1]:
             case "ROE using 9/30 Data":
                 factors.append(ROE())
             case "ROA using 9/30 Data":
@@ -46,6 +46,6 @@ def get_factors(available_factors):
             case "6-Mo Momentum %":
                 factors.append(Momentum6m())
             case _:
-                print(f"factor {available_factors[selected_factor]} is not available.")
+                print(f"factor {available_factors[selected_factor - 1]} is not available.")
     
     return factors
