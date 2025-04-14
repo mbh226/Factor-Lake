@@ -59,7 +59,7 @@ jobs:
       - name: Check if vulnerabilities exist in Safety JSON
         id: check_vulns
         run: |
-          if jq '.scan_results.projects[].files[].results.dependencies[]? | select(.vulnerabilities.known_vulnerabilities | length > 0)' ./scan-results/safety_output.json; then
+          if jq '.scan_results.projects[].files[].results.dependencies[]? | select(.specifications[].vulnerabilities.known_vulnerabilities | length > 0)' ./scan-results/safety_output.json; then
             echo "Vulnerabilities found."
             echo "Vulnerabilities_found=true" >> $GITHUB_ENV
           else
