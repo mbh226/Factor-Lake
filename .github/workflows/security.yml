@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install bandit safety
 
-      # Run Bandit Scan on the entire codebase and bad code file
+      # Run Bandit Scans
       - name: Run Bandit Scans
         run: |
           mkdir -p scan-results
@@ -65,16 +65,25 @@ jobs:
       - name: Check for Safety vulnerabilities
         id: check_vulns
         run: |
+          echo "Checking vulnerabilities in Safety scan results..."
+          
+          # Debugging: Print the entire Safety JSON file
+          cat ./scan-results/safety_output.json
+
+          # Run jq to check for vulnerabilities and print out what is found
+          jq -r '.scan_results.projects[].files[].results.dependencies[]? | select(.vulnerabilities.known_vulnerabilities | length > 0) | .name + " has vulnerabilities: " + (.vulnerabilities.known_vulnerabilities[]? | "- CVE: \(.id), Spec: \(.vulnerable_spec), Description: \(.description // "No description available")")' ./scan-results/safety_output.json || echo "No vulnerabilities found."
+
+          # If vulnerabilities found, set environment variable to true
           if jq '.scan_results.projects[].files[].results.dependencies[]? | select(.vulnerabilities.known_vulnerabilities | length > 0)' ./scan-results/safety_output.json; then
-            echo "Vulnerabilities found"
+            echo "Vulnerabilities found."
             echo "Vulnerabilities_found=true" >> $GITHUB_ENV
           else
-            echo "No vulnerabilities found"
+            echo "No vulnerabilities found."
             echo "Vulnerabilities_found=false" >> $GITHUB_ENV
           fi
         continue-on-error: true
 
-      # Convert Safety results to SARIF if vulnerabilities are found
+      # Convert Safety to SARIF if vulnerabilities are found
       - name: Convert Safety to SARIF
         if: ${{ env.Vulnerabilities_found == 'true' }}
         run: |
@@ -85,10 +94,10 @@ jobs:
         id: check_sarif_file
         run: |
           if [ -f ./scan-results/safety_output.sarif ]; then
-            echo "SARIF file exists, proceeding with upload"
+            echo "SARIF file exists, proceeding with upload."
             echo "sarif_file_exists=true" >> $GITHUB_ENV
           else
-            echo "SARIF file does not exist"
+            echo "SARIF file does not exist."
             echo "sarif_file_exists=false" >> $GITHUB_ENV
           fi
 
@@ -101,7 +110,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-processing: true
 
-      # Fail the workflow on any vulnerabilities found in Safety
+      # Fail workflow if vulnerabilities found
       - name: Fail workflow if vulnerabilities found
         if: ${{ env.Vulnerabilities_found == 'true' }}
         run: |
