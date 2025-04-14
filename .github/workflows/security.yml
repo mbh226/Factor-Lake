@@ -155,7 +155,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-processing: true
 
-      # Fail the build if vulnerabilities were found
+      # Fail the build if vulnerabilities were found (with details)
       - name: Fail workflow on Safety vulnerabilities (with details)
         if: ${{ env.Vulnerabilities_found == 'true' }}
         run: |
@@ -163,12 +163,17 @@ jobs:
           jq -r '
             .scan_results.projects[]?.files[]?.results.dependencies[]? 
             | select(.vulnerabilities.known_vulnerabilities | length > 0)
-            | . as $pkg 
-            | $pkg.vulnerabilities.known_vulnerabilities[]? 
-            | "🔸 \($pkg.name) \($pkg.version): \(.cve // "No CVE") - \(.description | gsub("\n"; " "))"
+            | [
+                .package.name, 
+                .package.version, 
+                (.vulnerabilities.known_vulnerabilities[]? | {
+                  cve: .cve // "No CVE",
+                  desc: (.description | gsub("\n"; " "))
+                })
+              ]
+            | "🔸 \(.0) \(.1): \(.2.cve) - \(.2.desc)"
           ' ./scan-results/safety_output.json || echo "⚠️ Could not parse Safety results."
           exit 1
-      
 
       # Print message if no vulnerabilities found
       - name: No vulnerabilities found, skipping conversion
