@@ -160,22 +160,19 @@ jobs:
         if: ${{ env.Vulnerabilities_found == 'true' }}
         run: |
           echo "❌ Vulnerabilities found in requirements.txt:"
-
+          
           # Find the vulnerable packages and show a failure message with the details
           jq -r '
             .scan_results.projects[]?.files[]?.results.dependencies[]?
             | select(.vulnerabilities.known_vulnerabilities | length > 0)
-            | . as $pkg
-            | $pkg.package.name + "==" + $pkg.package.version + ": " +
-              ($pkg.vulnerabilities.known_vulnerabilities[]? | .cve // "No CVE") + " - " +
-              (.description | gsub("\\n"; " "))
+            | "\(.package.name)==\(.package.version): " +
+              (.vulnerabilities.known_vulnerabilities[]?.cve // "No CVE") + " - " +
+              (.vulnerabilities.known_vulnerabilities[]?.description // "No description available")
           ' ./scan-results/safety_output.json || echo "⚠️ Could not parse Safety results."
-
+          
           # If any vulnerabilities are found, fail the build with a specific message
           echo "🚨 Workflow failed, vulnerable package detected!"
           exit 1
-
-
 
       # Print message if no vulnerabilities found
       - name: No vulnerabilities found, skipping conversion
