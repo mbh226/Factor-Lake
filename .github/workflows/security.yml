@@ -167,7 +167,7 @@ jobs:
           wait-for-processing: true
 
       # Fail workflow on Safety vulnerabilities (with details)
-      - name: Fail workflow on Safety vulnerabilities (with details)
+      - name: Warning if Safety vulnerabilities were found (with details)
         if: ${{ env.Vulnerabilities_found == 'true' }}
         run: |
           echo "❌ Vulnerabilities found in requirements.txt:"
