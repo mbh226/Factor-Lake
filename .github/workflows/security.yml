@@ -92,6 +92,11 @@ jobs:
       
           echo "⚠️ Vulnerabilities found, but workflow will continue."
 
+      # Handle no vulnerabilities found
+      - name: No vulnerabilities found, skipping SARIF conversion
+        if: ${{ env.Vulnerabilities_found == 'false' }}
+        run: echo "No vulnerabilities were found, skipping SARIF conversion."
+
       # Upload Safety SARIF results to GitHub Code Scanning (only if SARIF file exists)
       - name: Upload Safety results to code scanning alerts
         if: ${{ env.Vulnerabilities_found == 'true' }}
