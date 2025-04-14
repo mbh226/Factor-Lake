@@ -32,10 +32,27 @@ jobs:
           mkdir -p scan-results
           bandit -r . -f sarif -o scan-results/bandit-results.sarif || true
 
+      # Check if Bandit SARIF file exists
+      - name: Check if Bandit SARIF file exists
+        id: check_bandit_sarif_file
+        run: |
+          if [ -f scan-results/bandit-results.sarif ]; then
+            echo "Bandit SARIF exists."
+            echo "bandit_sarif_exists=true" >> $GITHUB_ENV
+          else
+            echo "Bandit SARIF does not exist."
+            echo "bandit_sarif_exists=false" >> $GITHUB_ENV
+          fi
+
+      # (Optional) Print Bandit SARIF for debugging
+      - name: Print Bandit SARIF (debug)
+        if: ${{ env.bandit_sarif_exists == 'true' }}
+        run: cat scan-results/bandit-results.sarif
+
       # Upload Bandit SARIF
       - name: Upload Bandit SARIF to Code Scanning
-        uses: github/codeql-action/upload-sarif@v3
-
+        if: ${{ env.bandit_sarif_exists == 'true' }}
+        uses: github/codeql-action/upload-sarif@main
         with:
           sarif_file: scan-results/bandit-results.sarif
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -44,7 +61,6 @@ jobs:
       # Install Safety
       - name: Install Safety
         run: |
-          python -m pip install --upgrade pip
           python -m pip install safety
 
       # Create output directory
@@ -118,7 +134,7 @@ jobs:
       # Upload Safety SARIF
       - name: Upload safety results to code scanning alerts
         if: ${{ env.sarif_file_exists == 'true' }}
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@main
         with:
           sarif_file: ./scan-results/safety_output.sarif
           token: ${{ secrets.GITHUB_TOKEN }}
