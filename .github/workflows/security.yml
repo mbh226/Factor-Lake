@@ -32,7 +32,7 @@ jobs:
           mkdir -p scan-results
           bandit -r . -f json -o scan-results/bandit-results.json || true
 
-      # Run Bandit Scan on bad_code.py file (expect failure but don't fail workflow)
+      # Run Bandit Scan on bad_code.py file (expected failure but don't fail workflow)
       - name: Bandit Scan on bad_code.py (expected failure)
         continue-on-error: true
         run: |
@@ -45,7 +45,7 @@ jobs:
           python scripts/convert_bandit_json_to_sarif.py scan-results/bandit-results.json scan-results/bandit-results.sarif
           python scripts/convert_bandit_json_to_sarif.py scan-results/bandit-bad-code-results.json scan-results/bandit-bad-code-results.sarif || true
 
-      # Check if any issues were detected outside of bad_code.py
+      # Check for issues outside of bad_code.py
       - name: Check for issues outside of bad_code.py
         run: |
           echo "Checking for issues outside bad_code.py..."
