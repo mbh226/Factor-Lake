@@ -20,40 +20,26 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # Install Bandit
-      - name: Install Bandit
-        run: |
-          python -m pip install --upgrade pip
-          pip install bandit
-
-      # Run Bandit and output SARIF
-      - name: Run Bandit Scan
-        run: |
-          mkdir -p scan-results
-          bandit -r . -f sarif -o scan-results/bandit-results.sarif || true
-
-      # Upload Bandit SARIF
-      - name: Upload Bandit SARIF to Code Scanning
-        uses: github/codeql-action/upload-sarif@v3
-
+      - name: Bandit Scan
+        uses: shundor/python-bandit-scan@9cc5aa4a006482b8a7f91134412df6772dbda22c
         with:
-          sarif_file: scan-results/bandit-results.sarif
-          token: ${{ secrets.GITHUB_TOKEN }}
-          wait-for-processing: true
+          exit_zero: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          skips: 'B101'
 
-      # Install Safety
-      - name: Install Safety
+      #installing Safety
+      - name: Install safety
         run: |
           python -m pip install --upgrade pip
           python -m pip install safety
 
-      # Create output directory
+      #creating output directory
       - name: Create output directory
         run: |
           mkdir -p ./scan-results
-          chmod -R 755 ./scan-results
+          chmod -R 755 ./scan-results  # Set permissions to be writable
 
-      # Run Safety scan
+      #run safety scan and save to json
       - name: Run safety scan
         run: |
           echo "Starting Safety scan..."
@@ -64,7 +50,8 @@ jobs:
           SAFETY_API_KEY: ${{ secrets.SAFETY_API_KEY }}
           SAFETY_STAGE: production
 
-      # Check if issues exist in Safety JSON
+
+      #check if issues exist in the json
       - name: Check if vulnerabilities exist in the Safety JSON
         id: check_vulns
         run: |
@@ -77,13 +64,13 @@ jobs:
           fi
         continue-on-error: true
 
-      # List scan-results directory
+      #list scan results directory to check output
       - name: List scan-results directory
         run: |
           echo "Listing contents of ./scan-results:"
           ls -l ./scan-results || echo "No files found in ./scan-results"
 
-      # Convert Safety output to SARIF
+      #convert results to SARIF
       - name: Convert safety results to SARIF
         if: ${{ env.Vulnerabilities_found == 'true' }}
         run: |
@@ -91,7 +78,7 @@ jobs:
           python scripts/convert_safety_to_sarif.py ./scan-results/safety_output.json ./scan-results/safety_output.sarif requirements.txt || echo "SARIF conversion failed"
           echo "Conversion complete."
 
-      # Check if SARIF file was created
+      #check if SARIF file was created
       - name: Check if SARIF file was created
         run: |
           echo "Checking for SARIF file..."
@@ -102,7 +89,7 @@ jobs:
             echo "SARIF file not found."
           fi
 
-      # Confirm SARIF exists
+      #make sure its really there before we upload it
       - name: Check if SARIF file exists
         id: check_sarif_file
         run: |
@@ -115,7 +102,7 @@ jobs:
           fi
         continue-on-error: true
 
-      # Upload Safety SARIF
+      #upload results to code scanning
       - name: Upload safety results to code scanning alerts
         if: ${{ env.sarif_file_exists == 'true' }}
         uses: github/codeql-action/upload-sarif@v3
@@ -124,7 +111,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-processing: true
 
-      # Print message if no vulnerabilities found
+      #just printing a message if no vulns are found
       - name: No vulnerabilities found, skipping conversion
         if: ${{ env.Vulnerabilities_found == 'false' }}
         run: echo "No vulnerabilities were found, skipping SARIF conversion."
