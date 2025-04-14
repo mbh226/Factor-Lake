@@ -1,4 +1,4 @@
-from FactorFunction import Momentum6m, ROE, ROA
+import FactorFunction
 
 def get_factors(available_factors):
     # Display the lists of available factors with index
@@ -40,11 +40,35 @@ def get_factors(available_factors):
         
         match available_factors[selected_factor - 1]:
             case "ROE using 9/30 Data":
-                factors.append(ROE())
+                factors.append(FactorFunction.ROE())
             case "ROA using 9/30 Data":
-                factors.append(ROA())
+                factors.append(FactorFunction.ROA())
             case "6-Mo Momentum %":
-                factors.append(Momentum6m())
+                factors.append(FactorFunction.Momentum6m())
+            case "12-Mo Momentum %":
+                factors.append(FactorFunction.Momentum12m())
+            case "1-Mo Momentum %":
+                factors.append(FactorFunction.Momentum1m())
+            case "Price to Book Using 9/30 Data":
+                factors.append(FactorFunction.P2B())
+            case "Next FY Earns/P":
+                factors.append(FactorFunction.NextFYrEarns())
+            case "1-Yr Price Vol %":
+                factors.append(FactorFunction.OneYrPriceVol())
+            case "Accruals/Assets":
+                factors.append(FactorFunction.AccrualsAssets())
+            case "ROA %":
+                factors.append(FactorFunction.ROAPercentage())
+            case "1-Yr Asset Growth %":
+                factors.append(FactorFunction.OneYrAssetGrowth())
+            case "1-Yr CapEX Growth %":
+                factors.append(FactorFunction.OneYrCapEXGrowth())
+            case "Book/Price":
+                factors.append(FactorFunction.BookPrice())
+            case "Next-Year\'s Return %":
+                factors.append(FactorFunction.NextYrReturn())
+            case "Next-Year\'s Active Return %":
+                factors.append(FactorFunction.NextYrActiveReturn())    
             case _:
                 print(f"factor {available_factors[selected_factor - 1]} is not available.")
     

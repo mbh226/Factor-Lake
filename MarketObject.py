@@ -21,9 +21,10 @@ class MarketObject():
         if 'Year' not in data.columns and 'Date' in data.columns:
             data['Date'] = pd.to_datetime(data['Date'])
             data['Year'] = data['Date'].dt.year
-        keep_cols = ['Ticker', 'Ending Price', 'Year', 'ROE using 9/30 Data', 'ROA using 9/30 Data', '6-Mo Momentum %']
+        available_factors = ['ROE using 9/30 Data', 'ROA using 9/30 Data', '12-Mo Momentum %', '1-Mo Momentum %', 'Price to Book Using 9/30 Data', 'Next FY Earns/P', '1-Yr Price Vol %', 'Accruals/Assets', 'ROA %', '1-Yr Asset Growth %', '1-Yr CapEX Growth %', 'Book/Price', 'Next-Year\'s Return %', 'Next-Year\'s Active Return %']
+        keep_cols = ['Ticker', 'Ending Price', 'Year', '6-Mo Momentum %'] + available_factors
         data = data[[col for col in keep_cols if col in data.columns]].copy()
-        data[['Ending Price', 'ROE using 9/30 Data', 'ROA using 9/30 Data']] = data[['Ending Price', 'ROE using 9/30 Data', 'ROA using 9/30 Data']].replace('--', None)
+        data[['Ending Price'] + available_factors] = data[['Ending Price'] + available_factors].replace('--', None)
         self.stocks = data
         self.t = t
     def getPrice(self, ticker):
