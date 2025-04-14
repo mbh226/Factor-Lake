@@ -24,10 +24,7 @@ temp_dir = "/tmp"
 ```
 #make sure you saved bad_code.py before executing this command
 
-bandit insecure_code.py
-
-<img width="1413" alt="image" src="https://github.com/user-attachments/assets/fe932892-d504-473b-b29b-bf674224319d" />
-
+bandit bad_code.py
 
 ```
 
@@ -64,7 +61,7 @@ temp_dir = "/tmp"
 ```
 #### Ignoring Something Throughout Entire Program Instead of One by One with nosec
 ```
-bandit insecure_code.py -s B105
+bandit bad_code.py -s B105
 ```
 
 #### Safety 
