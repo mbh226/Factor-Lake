@@ -1,5 +1,3 @@
-# scripts/bandit_to_sarif.py
-
 import sys
 import json
 import os
