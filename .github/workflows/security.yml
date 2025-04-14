@@ -61,6 +61,13 @@ jobs:
           mkdir -p ./scan-results
           safety scan --debug --json --stage production --output json > ./scan-results/safety_output.json 2>&1 || true
 
+      # Debug Safety JSON
+      - name: Debug Safety JSON
+        run: |
+          echo "---- Raw Safety output ----"
+          cat ./scan-results/safety_output.json
+          echo "---- End of output ----"
+
      # Check if vulnerabilities exist in the Safety JSON
       - name: Check if vulnerabilities exist in Safety JSON
         id: check_vulns
