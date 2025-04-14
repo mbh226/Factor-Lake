@@ -44,6 +44,12 @@ jobs:
         run: |
           python scripts/bandit_to_sarif.py scan-results/bandit-results.json scan-results/bandit-results.sarif
           python scripts/bandit_to_sarif.py scan-results/bandit-bad-code-results.json scan-results/bandit-bad-code-results.sarif || true
+  
+        # Print Bandit SARIF for bad_code.py
+      - name: Print Bandit SARIF for bad_code.py
+        run: |
+          echo "Dumping SARIF results for inspection:"
+          cat scan-results/bandit-bad-code-results.sarif || echo "❌ SARIF not found!"
 
       # Check for issues outside of bad_code.py
       - name: Check for issues outside of bad_code.py
