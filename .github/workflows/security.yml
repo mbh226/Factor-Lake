@@ -113,19 +113,17 @@ jobs:
           vulnerable_packages=$(jq -r '.scan_results.projects[].files[].results.dependencies[]? |
                  select(.specifications[].vulnerabilities.known_vulnerabilities | length > 0) |
                  "\(.name) is vulnerable"' ./scan-results/safety_output.json)
-      
+          
           if [ -n "$vulnerable_packages" ]; then
+            echo "⚠️ Vulnerable packages detected:"
             echo "$vulnerable_packages"
             echo "Vulnerabilities found."
             echo "Vulnerabilities_found=true" >> $GITHUB_ENV
           else
-            echo "No vulnerabilities found."
+            echo "✔️ No vulnerabilities found."
             echo "Vulnerabilities_found=false" >> $GITHUB_ENV
           fi
         continue-on-error: true
-
-
-
 
 
       # Convert Safety results to SARIF (only if vulnerabilities found)
@@ -157,22 +155,6 @@ jobs:
           sarif_file: ./scan-results/safety_output.sarif
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-processing: true
-
-      # Warn if vulns were found (based on first check)
-      - name: Warning if Safety vulnerabilities were found (with details)
-        if: steps.check_vulns_1.outputs.found == 'true'
-        run: |
-          echo "❌ Vulnerabilities found in requirements.txt:"
-          jq -r '
-            .scan_results.projects[].files[].results.dependencies[]?
-            | select(.specifications[].vulnerabilities.known_vulnerabilities | length > 0)
-            | "\(.name)==\(.specifications[0].raw):\n" +
-              (.specifications[].vulnerabilities.known_vulnerabilities[]? |
-                "- CVE: \(.id)\n   Spec: \(.vulnerable_spec)\n   Description: \(.description // "No description available")\n"
-              )
-          ' ./scan-results/safety_output.json || echo "⚠️ Could not parse Safety results."
-      
-          echo "⚠️ Vulnerabilities found, but workflow will continue."
 
       # Print message if no vulnerabilities found
       - name: No vulnerabilities found, skipping conversion
