@@ -56,17 +56,16 @@ jobs:
           echo "✅ No issues outside bad_code.py"
 
       # Run Safety scan and convert to SARIF
+      # Run Safety Scan and save to JSON
       - name: Run Safety Scan
         run: |
-          mkdir -p ./scan-results
-          safety scan --json --stage production > ./scan-results/safety_output.json || true
-
-      # Debug Safety JSON
-      - name: Debug Safety JSON
-        run: |
-          echo "---- Raw Safety output ----"
+          echo "Starting Safety scan..."
+          safety scan --debug --json --stage production --output json > ./scan-results/safety_output.json 2>&1 || true
+          echo "Safety scan complete."
           cat ./scan-results/safety_output.json
-          echo "---- End of output ----"
+        env:
+          SAFETY_API_KEY: ${{ secrets.SAFETY_API_KEY }}
+          SAFETY_STAGE: production
 
      # Check if vulnerabilities exist in the Safety JSON
       - name: Check if vulnerabilities exist in Safety JSON
