@@ -166,13 +166,25 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-processing: true
 
-      # Fail workflow on Safety vulnerabilities (with details)
+      # Check for vulns
+      - name: Check if vulnerabilities exist in Safety JSON
+        id: check_vulns
+        run: |
+          if jq '.scan_results.projects[].files[].results.dependencies[]? | select(.vulnerabilities.known_vulnerabilities | length > 0)' ./scan-results/safety_output.json; then
+            echo "Vulnerabilities found."
+            echo "Vulnerabilities_found=true" >> $GITHUB_ENV
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "No vulnerabilities found."
+            echo "Vulnerabilities_found=false" >> $GITHUB_ENV
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      # Warn if vulns were found
       - name: Warning if Safety vulnerabilities were found (with details)
-        if: ${{ env.Vulnerabilities_found == 'true' }}
+        if: steps.check_vulns.outputs.found == 'true'
         run: |
           echo "❌ Vulnerabilities found in requirements.txt:"
-      
-          # Use jq to extract and format the vulnerable package information with CVE and description
           jq -r '
             .scan_results.projects[].files[].results.dependencies[]?
             | select(.specifications[].vulnerabilities.known_vulnerabilities | length > 0)
@@ -182,7 +194,6 @@ jobs:
               )
           ' ./scan-results/safety_output.json || echo "⚠️ Could not parse Safety results."
       
-          # Fail the build if any vulnerabilities are detected
           echo "⚠️ Vulnerabilities found, but workflow will continue."
 
       # Print message if no vulnerabilities found
