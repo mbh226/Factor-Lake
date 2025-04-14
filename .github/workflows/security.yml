@@ -41,12 +41,6 @@ jobs:
           echo "⚠️ Scanning known-bad test file (UnitTests/bad_code.py)..."
           bandit UnitTests/bad_code.py -f json -o scan-results/bandit-bad-code-results.json || true
 
-      # Print Bandit SARIF for bad_code.py
-      - name: Print Bandit SARIF for bad_code.py
-        run: |
-          echo "Dumping SARIF results for inspection:"
-          cat scan-results/bandit-bad-code-results.sarif || echo "❌ SARIF not found!"
-
       # Print issues found in bad_code.py
       - name: Print issues found in bad_code.py
         run: |
@@ -117,14 +111,12 @@ jobs:
           if [ -n "$vulnerable_packages" ]; then
             echo "⚠️ Vulnerable packages detected:"
             echo "$vulnerable_packages"
-            echo "Vulnerabilities found."
             echo "Vulnerabilities_found=true" >> $GITHUB_ENV
           else
             echo "✔️ No vulnerabilities found."
             echo "Vulnerabilities_found=false" >> $GITHUB_ENV
           fi
         continue-on-error: true
-
 
       # Convert Safety results to SARIF (only if vulnerabilities found)
       - name: Convert Safety results to SARIF
