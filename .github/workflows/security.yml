@@ -103,22 +103,19 @@ jobs:
           echo "Listing contents of ./scan-results:"
           ls -l ./scan-results || echo "No files found in ./scan-results"
 
-      # Check if vulnerabilities exist in Safety JSON
+      # Check if vulns exist
       - name: Check if vulnerabilities exist in Safety JSON
         id: check_vulns
         run: |
           echo "Checking vulnerabilities in safety_output.json"
           
-          # Debugging: Print the entire Safety JSON file for inspection (optional)
-          cat ./scan-results/safety_output.json
-      
           # Check for vulnerabilities and output package names (if vulnerable)
-          jq -r '.scan_results.projects[].files[].results.dependencies[]? | 
-                 select(.specifications[].vulnerabilities.known_vulnerabilities | length > 0) | 
-                 "\(.name) is vulnerable"' ./scan-results/safety_output.json || echo "No vulnerabilities found."
+          vulnerable_packages=$(jq -r '.scan_results.projects[].files[].results.dependencies[]? |
+                 select(.specifications[].vulnerabilities.known_vulnerabilities | length > 0) |
+                 "\(.name) is vulnerable"' ./scan-results/safety_output.json)
       
-          # If vulnerabilities found, set environment variable to true
-          if jq '.scan_results.projects[].files[].results.dependencies[]? | select(.specifications[].vulnerabilities.known_vulnerabilities | length > 0)' ./scan-results/safety_output.json; then
+          if [ -n "$vulnerable_packages" ]; then
+            echo "$vulnerable_packages"
             echo "Vulnerabilities found."
             echo "Vulnerabilities_found=true" >> $GITHUB_ENV
           else
@@ -126,6 +123,7 @@ jobs:
             echo "Vulnerabilities_found=false" >> $GITHUB_ENV
           fi
         continue-on-error: true
+
 
 
 
