@@ -163,17 +163,12 @@ jobs:
           jq -r '
             .scan_results.projects[]?.files[]?.results.dependencies[]? 
             | select(.vulnerabilities.known_vulnerabilities | length > 0)
-            | [
-                .package.name, 
-                .package.version, 
-                (.vulnerabilities.known_vulnerabilities[]? | {
-                  cve: .cve // "No CVE",
-                  desc: (.description | gsub("\n"; " "))
-                })
-              ]
-            | "🔸 \(.0) \(.1): \(.2.cve) - \(.2.desc)"
+            | . as $pkg
+            | $pkg.vulnerabilities.known_vulnerabilities[]?
+            | "🔸 \($pkg.package.name) \($pkg.package.version): \(.cve // \"No CVE\") - \((.description | gsub(\"\\n\"; \" \")))"
           ' ./scan-results/safety_output.json || echo "⚠️ Could not parse Safety results."
           exit 1
+
 
       # Print message if no vulnerabilities found
       - name: No vulnerabilities found, skipping conversion
