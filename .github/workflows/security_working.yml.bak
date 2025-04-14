@@ -41,12 +41,6 @@ jobs:
           echo "⚠️ Scanning known-bad test file (UnitTests/bad_code.py)..."
           bandit UnitTests/bad_code.py -f json -o scan-results/bandit-bad-code-results.json || true
 
-      # Print Bandit SARIF for bad_code.py
-      - name: Print Bandit SARIF for bad_code.py
-        run: |
-          echo "Dumping SARIF results for inspection:"
-          cat scan-results/bandit-bad-code-results.sarif || echo "❌ SARIF not found!"
-
       # Print issues found in bad_code.py
       - name: Print issues found in bad_code.py
         run: |
@@ -103,30 +97,23 @@ jobs:
           echo "Listing contents of ./scan-results:"
           ls -l ./scan-results || echo "No files found in ./scan-results"
 
-      # Check if vulnerabilities exist in the Safety JSON
+      # Check if vulns exist
       - name: Check if vulnerabilities exist in Safety JSON
         id: check_vulns
         run: |
           echo "Checking vulnerabilities in safety_output.json"
           
-          # Debugging: Print the entire Safety JSON file for inspection
-          cat ./scan-results/safety_output.json
+          # Check for vulnerabilities and output package names (if vulnerable)
+          vulnerable_packages=$(jq -r '.scan_results.projects[].files[].results.dependencies[]? |
+                 select(.specifications[].vulnerabilities.known_vulnerabilities | length > 0) |
+                 "\(.name) is vulnerable"' ./scan-results/safety_output.json)
           
-          # Run jq to check for vulnerabilities and print out what is found
-          jq -r '.scan_results.projects[].files[].results.dependencies[]? | 
-            .specifications[]? | 
-            select(.vulnerabilities.known_vulnerabilities | length > 0) | 
-            .name + " has vulnerabilities: " + 
-            (.vulnerabilities.known_vulnerabilities[]? | "- CVE: \(.id), Spec: \(.vulnerable_spec), Description: \(.description // "No description available")")' ./scan-results/safety_output.json || echo "No vulnerabilities found."
-          
-          # If vulnerabilities found, set environment variable to true
-          if jq '.scan_results.projects[].files[].results.dependencies[]? | 
-            .specifications[]? | 
-            select(.vulnerabilities.known_vulnerabilities | length > 0)' ./scan-results/safety_output.json | grep -q .; then
-            echo "Vulnerabilities found."
+          if [ -n "$vulnerable_packages" ]; then
+            echo "⚠️ Vulnerable packages detected:"
+            echo "$vulnerable_packages"
             echo "Vulnerabilities_found=true" >> $GITHUB_ENV
           else
-            echo "No vulnerabilities found."
+            echo "✔️ No vulnerabilities found."
             echo "Vulnerabilities_found=false" >> $GITHUB_ENV
           fi
         continue-on-error: true
@@ -160,22 +147,6 @@ jobs:
           sarif_file: ./scan-results/safety_output.sarif
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-processing: true
-
-      # Warn if vulns were found (based on first check)
-      - name: Warning if Safety vulnerabilities were found (with details)
-        if: steps.check_vulns_1.outputs.found == 'true'
-        run: |
-          echo "❌ Vulnerabilities found in requirements.txt:"
-          jq -r '
-            .scan_results.projects[].files[].results.dependencies[]?
-            | select(.specifications[].vulnerabilities.known_vulnerabilities | length > 0)
-            | "\(.name)==\(.specifications[0].raw):\n" +
-              (.specifications[].vulnerabilities.known_vulnerabilities[]? |
-                "- CVE: \(.id)\n   Spec: \(.vulnerable_spec)\n   Description: \(.description // "No description available")\n"
-              )
-          ' ./scan-results/safety_output.json || echo "⚠️ Could not parse Safety results."
-      
-          echo "⚠️ Vulnerabilities found, but workflow will continue."
 
       # Print message if no vulnerabilities found
       - name: No vulnerabilities found, skipping conversion
