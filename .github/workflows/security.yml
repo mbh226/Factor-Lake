@@ -59,7 +59,7 @@ jobs:
       - name: Run Safety Scan
         run: |
           mkdir -p ./scan-results
-          safety scan --debug --json --stage production --output json > ./scan-results/safety_output.json 2>&1 || true
+          safety scan --json --stage production > ./scan-results/safety_output.json || true
 
       # Debug Safety JSON
       - name: Debug Safety JSON
