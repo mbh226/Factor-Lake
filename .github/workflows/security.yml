@@ -155,6 +155,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-processing: true
 
+      # Fail the build if vulnerabilities were found
+       - name: Fail workflow on Safety vulnerabilities
+       if: ${{ env.Vulnerabilities_found == 'true' }}
+       run: |
+         echo "❌ Vulnerabilities found in requirements.txt. Failing the workflow."
+         exit 1
+
       # Print message if no vulnerabilities found
       - name: No vulnerabilities found, skipping conversion
         if: ${{ env.Vulnerabilities_found == 'false' }}
