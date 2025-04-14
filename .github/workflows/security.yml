@@ -156,10 +156,14 @@ jobs:
           wait-for-processing: true
 
       # Fail the build if vulnerabilities were found
-      - name: Fail workflow on Safety vulnerabilities
+      - name: Fail workflow on Safety vulnerabilities (with details)
         if: ${{ env.Vulnerabilities_found == 'true' }}
         run: |
-          echo "❌ Vulnerabilities found in requirements.txt. Failing the workflow."
+          echo "❌ Vulnerabilities found in requirements.txt:"
+          jq -r '.scan_results.projects[].files[].results.dependencies[]? 
+            | select(.vulnerabilities.known_vulnerabilities | length > 0) 
+            | "🔸 \(.name) \(.version): \(.vulnerabilities.known_vulnerabilities[].cve) - \(.vulnerabilities.known_vulnerabilities[].description)"' \
+            ./scan-results/safety_output.json || echo "Could not parse Safety results."
           exit 1
 
       # Print message if no vulnerabilities found
