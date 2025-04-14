@@ -124,7 +124,7 @@ jobs:
 
       # Check if vulnerabilities exist in the Safety JSON
       - name: Check if vulnerabilities exist in Safety JSON
-        id: check_vulns
+        id: check_vulns_1
         run: |
           echo "Checking vulnerabilities in safety_output.json"
           
