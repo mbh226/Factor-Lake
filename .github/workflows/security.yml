@@ -105,7 +105,7 @@ jobs:
       #upload results to code scanning
       - name: Upload safety results to code scanning alerts
         if: ${{ env.sarif_file_exists == 'true' }}
-        uses: github/codeql-action/upload-sarif@main
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: ./scan-results/safety_output.sarif
           token: ${{ secrets.GITHUB_TOKEN }}
