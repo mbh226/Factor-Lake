@@ -32,31 +32,40 @@ jobs:
           mkdir -p scan-results
           bandit -r . -f json -o scan-results/bandit-results.json || true
 
-      # Run Bandit Scan on bad_code.py file (expected failure but don't fail workflow)
+      # Run Bandit Scan on bad_code.py file (expect failure but don't fail workflow)
       - name: Bandit Scan on bad_code.py (expected failure)
         continue-on-error: true
         run: |
           echo "⚠️ Scanning known-bad test file (UnitTests/bad_code.py)..."
           bandit UnitTests/bad_code.py -f json -o scan-results/bandit-bad-code-results.json || true
 
-      # Convert Bandit JSON output to SARIF
-      - name: Convert Bandit JSON to SARIF
-        run: |
-          python scripts/bandit_to_sarif.py scan-results/bandit-results.json scan-results/bandit-results.sarif
-          python scripts/bandit_to_sarif.py scan-results/bandit-bad-code-results.json scan-results/bandit-bad-code-results.sarif || true
-  
-        # Print Bandit SARIF for bad_code.py
+      # Print Bandit SARIF for bad_code.py
       - name: Print Bandit SARIF for bad_code.py
         run: |
           echo "Dumping SARIF results for inspection:"
           cat scan-results/bandit-bad-code-results.sarif || echo "❌ SARIF not found!"
 
-      # Check for issues outside of bad_code.py
+      # Print issues found in bad_code.py
+      - name: Print issues found in bad_code.py
+        run: |
+          echo "🔎 Checking for Bandit issues in bad_code.py..."
+          if jq '.results | length > 0' scan-results/bandit-bad-code-results.json | grep -q 'true'; then
+            echo "❗ Issues found in bad_code.py:"
+            jq '.results[] | {issue: .issue_text, line: .line_number, test_id: .test_id}' scan-results/bandit-bad-code-results.json
+          else
+            echo "✅ No issues found in bad_code.py (unexpected)"
+          fi
+
+      # Convert Bandit JSON to SARIF
+      - name: Convert Bandit JSON to SARIF
+        run: |
+          python scripts/bandit_to_sarif.py scan-results/bandit-results.json scan-results/bandit-results.sarif
+          python scripts/bandit_to_sarif.py scan-results/bandit-bad-code-results.json scan-results/bandit-bad-code-results.sarif || true
+
+      # Check if any issues were detected outside of bad_code.py
       - name: Check for issues outside of bad_code.py
         run: |
           echo "Checking for issues outside bad_code.py..."
-          
-          # Check for issues in the main repo, excluding bad_code.py
           if [ -f scan-results/bandit-results.sarif ] && grep -q '"ruleId"' scan-results/bandit-results.sarif && ! grep -q "UnitTests/bad_code.py" scan-results/bandit-results.sarif; then
             echo "❌ Security issues detected outside of bad_code.py. Failing the workflow."
             exit 1
