@@ -5,9 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="434949bd-9673-4f23-ba66-7f9a97088b59" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.github/workflows/security-scanning.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/convert_safety_to_sarif.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/trigger_safety.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,7 +74,7 @@
       <workItem from="1742162962784" duration="1986000" />
       <workItem from="1743440043927" duration="21408000" />
       <workItem from="1743523734471" duration="17000" />
-      <workItem from="1744632806629" duration="2049000" />
+      <workItem from="1744632806629" duration="2936000" />
     </task>
     <servers />
   </component>
