@@ -67,19 +67,6 @@ jobs:
           SAFETY_API_KEY: ${{ secrets.SAFETY_API_KEY }}
           SAFETY_STAGE: production
 
-     # Check if vulnerabilities exist in the Safety JSON
-      - name: Check if vulnerabilities exist in Safety JSON
-        id: check_vulns
-        run: |
-          if jq '.scan_results.projects[].files[].results.dependencies[]? | select(.vulnerabilities.known_vulnerabilities | length > 0)' ./scan-results/safety_output.json; then
-            echo "Vulnerabilities found."
-            echo "Vulnerabilities_found=true" >> $GITHUB_ENV
-          else
-            echo "No vulnerabilities found."
-            echo "Vulnerabilities_found=false" >> $GITHUB_ENV
-          fi
-        continue-on-error: true
-
       # Convert Safety to SARIF if vulnerabilities are found
       - name: Convert Safety to SARIF
         if: ${{ env.Vulnerabilities_found == 'true' }}
@@ -107,12 +94,24 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-processing: true
 
-      # Fail workflow if vulnerabilities found
-      - name: Fail workflow if vulnerabilities found
+      # Fail workflow on Safety vulnerabilities (with details)
+      - name: Fail workflow on Safety vulnerabilities (with details)
         if: ${{ env.Vulnerabilities_found == 'true' }}
         run: |
-          echo "❌ Vulnerabilities found in requirements.txt"
-          jq -r '.scan_results.projects[].files[].results.dependencies[]? | select(.vulnerabilities.known_vulnerabilities | length > 0) | "- CVE: \(.vulnerabilities.known_vulnerabilities[].id), Spec: \(.vulnerabilities.known_vulnerabilities[].vulnerable_spec)"' ./scan-results/safety_output.json
+          echo "❌ Vulnerabilities found in requirements.txt:"
+      
+          # Use jq to extract and format the vulnerable package information with CVE and description
+          jq -r '
+            .scan_results.projects[].files[].results.dependencies[]?
+            | select(.specifications[].vulnerabilities.known_vulnerabilities | length > 0)
+            | "\(.name)==\(.specifications[0].raw):\n" +
+              (.specifications[].vulnerabilities.known_vulnerabilities[]? |
+                "- CVE: \(.id)\n   Spec: \(.vulnerable_spec)\n   Description: \(.description // "No description available")\n"
+              )
+          ' ./scan-results/safety_output.json || echo "⚠️ Could not parse Safety results."
+      
+          # Fail the build if any vulnerabilities are detected
+          echo "🚨 Workflow failed, vulnerable package detected!"
           exit 1
 
       # No vulnerabilities found
