@@ -61,19 +61,10 @@ jobs:
           mkdir -p ./scan-results
           safety scan --debug --json --stage production --output json > ./scan-results/safety_output.json 2>&1 || true
 
-      # Check Safety results for vulnerabilities
-      - name: Check for Safety vulnerabilities
+     # Check if vulnerabilities exist in the Safety JSON
+      - name: Check if vulnerabilities exist in Safety JSON
         id: check_vulns
         run: |
-          echo "Checking vulnerabilities in Safety scan results..."
-          
-          # Debugging: Print the entire Safety JSON file
-          cat ./scan-results/safety_output.json
-
-          # Run jq to check for vulnerabilities and print out what is found
-          jq -r '.scan_results.projects[].files[].results.dependencies[]? | select(.vulnerabilities.known_vulnerabilities | length > 0) | .name + " has vulnerabilities: " + (.vulnerabilities.known_vulnerabilities[]? | "- CVE: \(.id), Spec: \(.vulnerable_spec), Description: \(.description // "No description available")")' ./scan-results/safety_output.json || echo "No vulnerabilities found."
-
-          # If vulnerabilities found, set environment variable to true
           if jq '.scan_results.projects[].files[].results.dependencies[]? | select(.vulnerabilities.known_vulnerabilities | length > 0)' ./scan-results/safety_output.json; then
             echo "Vulnerabilities found."
             echo "Vulnerabilities_found=true" >> $GITHUB_ENV
