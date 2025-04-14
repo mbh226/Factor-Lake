@@ -22,9 +22,13 @@ temp_dir = "/tmp"
 
 #### Executed Bandit
 ```
-#make sure you saved insecure_code.py before executing this command
+#make sure you saved bad_code.py before executing this command
 
 bandit insecure_code.py
+
+<img width="1413" alt="image" src="https://github.com/user-attachments/assets/fe932892-d504-473b-b29b-bf674224319d" />
+
+
 ```
 
 #### Executing Bandit with Options
@@ -32,13 +36,13 @@ bandit insecure_code.py
 #This doesn't change any metrics or anything, it only changes what it reports to you.
 
 #sets logging level to "warning" - least verbose
-bandit insecure_code.py -l
+bandit bad_code.py -l
 
 #sets logging level to "info"
-bandit insecure_code.py -ll
+bandit bad_code.py -ll
 
 #sets logging level to "debug" -  most verbose
-bandit insecure_code.py -lll
+bandit bad_code.py -lll
 
 #scanning an entire directory
 bandit -r .
