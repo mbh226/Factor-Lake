@@ -42,8 +42,8 @@ jobs:
       # Convert Bandit JSON output to SARIF
       - name: Convert Bandit JSON to SARIF
         run: |
-          python scripts/convert_bandit_json_to_sarif.py scan-results/bandit-results.json scan-results/bandit-results.sarif
-          python scripts/convert_bandit_json_to_sarif.py scan-results/bandit-bad-code-results.json scan-results/bandit-bad-code-results.sarif || true
+          python scripts/bandit_to_sarif.py scan-results/bandit-results.json scan-results/bandit-results.sarif
+          python scripts/bandit_to_sarif.py scan-results/bandit-bad-code-results.json scan-results/bandit-bad-code-results.sarif || true
 
       # Check for issues outside of bad_code.py
       - name: Check for issues outside of bad_code.py
