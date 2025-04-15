@@ -1,0 +1,28 @@
+name: Dummy SARIF Upload for Setup
+
+on:
+  push:
+    branches: [ "main" ]  # You can specify the branch you want to trigger it on
+  workflow_dispatch:   # This allows you to trigger it manually
+
+jobs:
+  dummy_sarif_upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repo
+      - uses: actions/checkout@v2
+
+      # 🧪 Generate dummy SARIF file
+      - name: Generate Dummy SARIF
+        run: |
+          mkdir -p ./scan-results
+          echo '{"version":"2.1.0","runs":[{"tool":{"driver":{"name":"FakeScanner","rules":[]}},"results":[]}]}'> ./scan-results/dummy.sarif
+
+      # ☁️ Upload the Dummy SARIF to GitHub
+      - name: Upload Dummy SARIF to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ./scan-results/dummy.sarif
+          token: ${{ secrets.GITHUB_TOKEN }}
+          wait-for-processing: true
