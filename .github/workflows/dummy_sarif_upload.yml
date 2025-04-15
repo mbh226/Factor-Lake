@@ -2,8 +2,9 @@ name: Dummy SARIF Upload for Setup
 
 on:
   push:
-    branches: [ "main" ]  # You can specify the branch you want to trigger it on
-  workflow_dispatch:   # This allows you to trigger it manually
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
 
 jobs:
   dummy_sarif_upload:
