@@ -2,13 +2,16 @@ name: Dummy SARIF Upload for Setup
 
 on:
   push:
-    branches: [ "*" ]
-  pull_request:
-    branches: [ "*" ]
+    branches: [ "main" ]  # Trigger on push to main branch
+  workflow_dispatch:   # Allows manual trigger
 
 jobs:
   dummy_sarif_upload:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write      # Permissions to read and write contents
+      security-events: write # Permissions to post security events (this is crucial for SARIF uploads)
+      actions: read        # Permissions for reading actions data
 
     steps:
       # Checkout the repo
