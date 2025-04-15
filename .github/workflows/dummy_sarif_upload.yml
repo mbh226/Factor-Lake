@@ -2,7 +2,9 @@ name: Dummy SARIF Upload for Setup
 
 on:
   push:
-    branches: [ "main" ]  # Trigger on push to main branch
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
   workflow_dispatch:   # Allows manual trigger
 
 jobs:
