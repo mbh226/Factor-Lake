@@ -46,13 +46,18 @@ jobs:
           echo "Scanning known-bad file (UnitTests/bad_code.py)..."
           bandit UnitTests/bad_code.py -f json -o scan-results/bandit-bad-code-results.json || true
 
-      # ✅ Evaluate Bandit results (exclude test file)
-      - name: 🚨 Evaluate Bandit scan (exclude test file)
+      # Evaluate and Print Bandit Results
+      - name: 🚨 Evaluate and Print Bandit scan results
         run: |
-          echo "Checking for Bandit issues outside bad_code.py..."
+          echo "🔍 Evaluating Bandit results..."
+
           if [ -f scan-results/bandit-results.json ] && jq '.results | length > 0' scan-results/bandit-results.json | grep -q 'true'; then
-            if ! grep -q "UnitTests/bad_code.py" scan-results/bandit-results.json; then
-              echo "❌ Security issues found in actual code!"
+            echo "🔸 Issues found. Printing them below:"
+            jq -r '.results[] | "\(.filename):\(.line_number) [\(.issue_severity)] \(.issue_text)"' scan-results/bandit-results.json
+
+            # Check for issues outside bad_code.py
+            if jq -r '.results[].filename' scan-results/bandit-results.json | grep -v "UnitTests/bad_code.py" | grep -q .; then
+              echo "❌ Security issues found in actual code (not just bad_code.py)!"
               exit 1
             else
               echo "✅ Only issues in bad_code.py — as expected."
