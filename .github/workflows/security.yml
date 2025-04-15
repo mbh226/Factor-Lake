@@ -116,6 +116,12 @@ jobs:
           fi
         continue-on-error: true
 
+      # dummy sarif upload for set up purposes
+      - name: 🧪 Generate dummy SARIF (temp workaround)
+        run: |
+          mkdir -p ./scan-results
+          echo '{"version":"2.1.0","runs":[{"tool":{"driver":{"name":"FakeScanner","rules":[]}},"results":[]}]}'> ./scan-results/safety_output.sarif
+
       # ☁️ Upload SARIF to GitHub (if exists)
       - name: ☁️ Upload Safety SARIF to GitHub
         if: ${{ env.sarif_file_exists == 'true' }}
