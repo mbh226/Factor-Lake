@@ -1,0 +1,131 @@
+name: Security Scanning
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+  schedule:
+    - cron: '26 22 * * 2'  # Every Tuesday at 22:26 UTC
+
+jobs:
+  security_scanning:
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # 🧾 Checkout repo
+      - uses: actions/checkout@v2
+
+      # 🛠️ Install Bandit & Safety
+      - name: 📦 Install Bandit & Safety
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade bandit safety
+
+      # 📁 Create scan-results directory
+      - name: 📁 Create output directory
+        run: |
+          mkdir -p ./scan-results
+          chmod -R 755 ./scan-results
+
+      # 🛡️ Bandit: Scan entire codebase
+      - name: 🛡️ Bandit - Scan full repo
+        run: |
+          echo "Running Bandit on the full codebase..."
+          bandit -r . -f json -o scan-results/bandit-results.json || true
+
+      # ⚠️ Bandit: Scan known-bad test file
+      - name: ⚠️ Bandit - Scan bad_code.py (expected issues)
+        continue-on-error: true
+        run: |
+          echo "Scanning known-bad file (UnitTests/bad_code.py)..."
+          bandit UnitTests/bad_code.py -f json -o scan-results/bandit-bad-code-results.json || true
+
+      # ✅ Evaluate Bandit results (exclude test file)
+      - name: 🚨 Evaluate Bandit scan (exclude test file)
+        run: |
+          echo "Checking for Bandit issues outside bad_code.py..."
+          if [ -f scan-results/bandit-results.json ] && jq '.results | length > 0' scan-results/bandit-results.json | grep -q 'true'; then
+            if ! grep -q "UnitTests/bad_code.py" scan-results/bandit-results.json; then
+              echo "❌ Security issues found in actual code!"
+              exit 1
+            else
+              echo "✅ Only issues in bad_code.py — as expected."
+            fi
+          else
+            echo "✅ No Bandit issues detected."
+          fi
+
+      # 📦 Safety: Run dependency scan
+      - name: 🔐 Safety - Dependency scan
+        run: |
+          echo "Running Safety scan..."
+          safety scan --debug --json --stage production --output json > ./scan-results/safety_output.json 2>&1 || true
+          echo "Safety scan complete. Output:"
+          cat ./scan-results/safety_output.json
+        env:
+          SAFETY_API_KEY: ${{ secrets.SAFETY_API_KEY }}
+          SAFETY_STAGE: production
+
+      # 🧪 Check for vulnerable packages
+      - name: 🧪 Check Safety results for vulnerabilities
+        id: check_vulns
+        run: |
+          echo "Analyzing Safety output..."
+          vulnerable_packages=$(jq -r '.scan_results.projects[].files[].results.dependencies[]? |
+            select(.specifications[].vulnerabilities.known_vulnerabilities | length > 0) |
+            "\(.name) is vulnerable"' ./scan-results/safety_output.json)
+
+          if [ -n "$vulnerable_packages" ]; then
+            echo "❗ Vulnerable packages found:"
+            echo "$vulnerable_packages"
+            echo "Vulnerabilities_found=true" >> $GITHUB_ENV
+          else
+            echo "✅ No vulnerable packages found."
+            echo "Vulnerabilities_found=false" >> $GITHUB_ENV
+          fi
+        continue-on-error: true
+
+      # 📄 Convert JSON to SARIF
+      - name: 🔁 Convert Bandit JSON to SARIF
+        run: |
+          python scripts/bandit_to_sarif.py scan-results/bandit-results.json scan-results/bandit-results.sarif
+          python scripts/bandit_to_sarif.py scan-results/bandit-bad-code-results.json scan-results/bandit-bad-code-results.sarif || true
+
+      - name: 🔁 Convert Safety results to SARIF (if vulnerabilities found)
+        if: ${{ env.Vulnerabilities_found == 'true' }}
+        run: |
+          echo "Converting Safety output to SARIF..."
+          python scripts/convert_safety_to_sarif.py ./scan-results/safety_output.json ./scan-results/safety_output.sarif requirements.txt || echo "❌ Safety SARIF conversion failed"
+
+      # ✅ Confirm SARIF file exists before uploading
+      - name: ✅ Check if Safety SARIF file exists
+        id: check_sarif_file
+        run: |
+          if [ -f ./scan-results/safety_output.sarif ]; then
+            echo "SARIF file exists."
+            echo "sarif_file_exists=true" >> $GITHUB_ENV
+          else
+            echo "SARIF file does not exist."
+            echo "sarif_file_exists=false" >> $GITHUB_ENV
+          fi
+        continue-on-error: true
+
+      # ☁️ Upload SARIF to GitHub (if exists)
+      - name: ☁️ Upload Safety SARIF to GitHub
+        if: ${{ env.sarif_file_exists == 'true' }}
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ./scan-results/safety_output.sarif
+          token: ${{ secrets.GITHUB_TOKEN }}
+          wait-for-processing: true
+
+      # 💤 Skip upload if no SARIF
+      - name: 💤 No vulnerabilities found - skipping upload
+        if: ${{ env.Vulnerabilities_found == 'false' }}
+        run: echo "No vulnerabilities were found — skipping SARIF conversion & upload."
