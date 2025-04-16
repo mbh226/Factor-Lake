@@ -29,7 +29,7 @@ def calculate_holdings(factor, aum, market):
 
     return portfolio_new
 
-def calculate_growth(portfolio, next_market, current_market, verbosity=verbosity_level):
+def calculate_growth(portfolio, next_market, current_market, verbosity=None):
     # Calculate start value using the current market
     total_start_value = 0
     for factor_portfolio in portfolio:
