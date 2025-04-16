@@ -54,7 +54,7 @@ def calculate_growth(portfolio, next_market, current_market, verbosity=None):
     growth = (total_end_value - total_start_value) / total_start_value if total_start_value else 0
     return growth, total_start_value, total_end_value
 
-def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbosity=verbosity_level):
+def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbosity=None):
     aum = initial_aum
     years = []
     portfolio_returns = []  # Store yearly returns for Information Ratio
@@ -130,7 +130,7 @@ def get_benchmark_return(year):
     }
     return benchmark_data.get(year, 0)
 
-def calculate_information_ratio(portfolio_returns, benchmark_returns, verbosity = verbosity_level):
+def calculate_information_ratio(portfolio_returns, benchmark_returns, verbosity = None):
     """
     Calculates the Information Ratio (IR) for a given set of portfolio returns and benchmark returns.
     
