@@ -2,7 +2,7 @@ import FactorFunction
 
 def get_factors(available_factors):
     # Display the lists of available factors with index
-    print(f"Available factors: ")
+    print(f"\nAvailable factors: ")
     for i in range(len(available_factors)):
         print(f"{i + 1}. {available_factors[i]}")
     
