@@ -2,6 +2,7 @@ from MarketObject import load_data, MarketObject
 from portfolio import Portfolio
 from CalculateHoldings import rebalance_portfolio
 from UserInput import get_factors
+from VerbosityOptions import get_verbosity_level
 import pandas as pd
 import numpy as np
 
