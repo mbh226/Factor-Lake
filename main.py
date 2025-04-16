@@ -3,6 +3,7 @@ from portfolio import Portfolio
 from CalculateHoldings import rebalance_portfolio
 from UserInput import get_factors
 import pandas as pd
+import numpy as np
 
 def main():
     ### Load market data ###
@@ -16,10 +17,9 @@ def main():
     available_factors = ['ROE using 9/30 Data', 'ROA using 9/30 Data', '12-Mo Momentum %', '6-Mo Momentum %', '1-Mo Momentum %', 'Price to Book Using 9/30 Data', 'Next FY Earns/P', '1-Yr Price Vol %', 'Accruals/Assets', 'ROA %', '1-Yr Asset Growth %', '1-Yr CapEX Growth %', 'Book/Price', 'Next-Year\'s Return %', 'Next-Year\'s Active Return %']
     rdata = rdata[['Ticker', 'Ending Price', 'Year'] + available_factors]
     factors = get_factors(available_factors)
-
+    verbosity_level = get_verbosity_level() 
     ### Rebalancing portfolio across years ###
-    print("Rebalancing portfolio...")
-    final_portfolio = rebalance_portfolio(rdata, factors, start_year=2002, end_year=2023, initial_aum=1)
-
+    print("\nRebalancing portfolio...")
+    final_portfolio = rebalance_portfolio(rdata, factors, start_year=2002, end_year=2023, initial_aum=1,verbosity=verbosity_level)
 if __name__ == "__main__":
     main()
