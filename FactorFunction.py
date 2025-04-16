@@ -1,6 +1,8 @@
 from MarketObject import MarketObject, load_data
 import pandas as pd
 
+load_data
+import numpy as np
 class Factors:
     def get(ticker, market):
         return "Factor not specified"
@@ -245,26 +247,26 @@ class NextYrActiveReturn(Factors):
             print(f"Error accessing Next-Year's Active Return % for {ticker}: {e}")
             return None
 
-#Creating an Example
-if __name__ == "__main__":
-    rdata = load_data()
-    rdata.columns = rdata.columns.str.strip()
-    rdata = rdata.loc[:, ~rdata.columns.duplicated(keep='first')]
-    rdata['Ticker'] = rdata['Ticker-Region'].dropna().apply(lambda x: x.split('-')[0].strip())
-    rdata['Date'] = pd.to_datetime(rdata['Date'])
-    rdata['Year'] = rdata['Date'].dt.year
+# #Creating an Example
+# if __name__ == "__main__":
+#     rdata = load_data()
+#     rdata.columns = rdata.columns.str.strip()
+#     rdata = rdata.loc[:, ~rdata.columns.duplicated(keep='first')]
+#     rdata['Ticker'] = rdata['Ticker-Region'].dropna().apply(lambda x: x.split('-')[0].strip())
+#     rdata['Date'] = pd.to_datetime(rdata['Date'])
+#     rdata['Year'] = rdata['Date'].dt.year
 
-    df_2002 = rdata[rdata['Year'] == 2002].copy()
-    df_2003 = rdata[rdata['Year'] == 2003].copy()
+#     df_2002 = rdata[rdata['Year'] == 2002].copy()
+#     df_2003 = rdata[rdata['Year'] == 2003].copy()
 
-    marketObject_2002 = MarketObject(df_2002, 2002)
-    marketObject_2003 = MarketObject(df_2003, 2003)
+#     marketObject_2002 = MarketObject(df_2002, 2002)
+#     marketObject_2003 = MarketObject(df_2003, 2003)
 
 
-    # EXAMPLE USING Factors CLASS 
-    Momentum6m_2002_FLWS = Factors.Momentum6m("FLWS", marketObject_2002)
-    Momentum6m_2002_AAPL = Factors.Momentum6m("AAPL", marketObject_2002)
+#     # EXAMPLE USING Factors CLASS 
+#     Momentum6m_2002_FLWS = Factors.Momentum6m("FLWS", marketObject_2002)
+#     Momentum6m_2002_AAPL = Factors.Momentum6m("AAPL", marketObject_2002)
 
-    print(f'\n6 Month Momentum Value of FLWS in 2002: ' + str(Momentum6m_2002_FLWS))
-    print(f'6 Month Momentum Value of AAPL in 2002: ' + str(Momentum6m_2002_AAPL))
+#     print(f'\n6 Month Momentum Value of FLWS in 2002: ' + str(Momentum6m_2002_FLWS))
+#     print(f'6 Month Momentum Value of AAPL in 2002: ' + str(Momentum6m_2002_AAPL))
 

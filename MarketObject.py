@@ -8,39 +8,44 @@ def load_data():
     file_path = '/content/drive/My Drive/Cayuga Fund Factor Lake/FR2000 Annual Quant Data FOR RETURN SIMULATION.xlsx'
     rdata = pd.read_excel(file_path, sheet_name='Data', header=2, skiprows=[3, 4])
     return rdata
+
 class MarketObject():
-    def __init__(self, data, t):
+    def __init__(self, data, t, verbosity=1):
         """
-        data(Dataframe):    column 1 being 'Ticker', column 2 being 'Ending Price', column 3 being ''Year'', column 4 being 'ROE using 9/30 Data', column 5 being 'ROA using 9/30 Data', column 6 being ''6-Mo Momentum %'
-        t(Datetime):        Date of market data,
+        data(DataFrame): column 1 is 'Ticker', column 2 is 'Ending Price', column 3 is 'Year', column 4 is 'ROE using 9/30 Data', etc.
+        t (int): Year of market data.
+        verbosity (int): Controls level of printed output. 0 = silent, 1 = normal, 2+ = verbose.
         """
         data.columns = data.columns.str.strip()
         data = data.loc[:, ~data.columns.duplicated(keep='first')]
+
         if 'Ticker' not in data.columns and 'Ticker-Region' in data.columns:
             data['Ticker'] = data['Ticker-Region'].dropna().apply(lambda x: x.split('-')[0].strip())
         if 'Year' not in data.columns and 'Date' in data.columns:
             data['Date'] = pd.to_datetime(data['Date'])
             data['Year'] = data['Date'].dt.year
-        available_factors = ['ROE using 9/30 Data', 'ROA using 9/30 Data', '12-Mo Momentum %', '1-Mo Momentum %', 'Price to Book Using 9/30 Data', 'Next FY Earns/P', '1-Yr Price Vol %', 'Accruals/Assets', 'ROA %', '1-Yr Asset Growth %', '1-Yr CapEX Growth %', 'Book/Price', 'Next-Year\'s Return %', 'Next-Year\'s Active Return %']
+
+        available_factors = [
+            'ROE using 9/30 Data', 'ROA using 9/30 Data', '12-Mo Momentum %', '1-Mo Momentum %',
+            'Price to Book Using 9/30 Data', 'Next FY Earns/P', '1-Yr Price Vol %', 'Accruals/Assets',
+            'ROA %', '1-Yr Asset Growth %', '1-Yr CapEX Growth %', 'Book/Price',
+            "Next-Year's Return %", "Next-Year's Active Return %"
+        ]
+
         keep_cols = ['Ticker', 'Ending Price', 'Year', '6-Mo Momentum %'] + available_factors
         data = data[[col for col in keep_cols if col in data.columns]].copy()
+
+        # Replace '--' with NaNs
         data[['Ending Price'] + available_factors] = data[['Ending Price'] + available_factors].replace('--', None)
+
         self.stocks = data
         self.t = t
+        self.verbosity = verbosity
+
     def getPrice(self, ticker):
         ticker_data = self.stocks.loc[self.stocks['Ticker'] == ticker]
-        #check to see if results are empty - molly
         if ticker_data.empty:
-            print(f"{ticker} - not found in market data for {self.t} - SKIPPING")
+            if self.verbosity >= 2:
+                print(f"{ticker} - not found in market data for {self.t} - SKIPPING")
             return None
-        #if the data exists, return the last row's ending price - molly
         return ticker_data['Ending Price'].iloc[-1]
-### MOVED THIS TO PORTFOLIO.PY ###
-#data = rdata.copy()
-#data['Ticker'] = data['Ticker-Region'].dropna().apply(lambda x: x[0:x.find('-')])
-#data['Year'] = pd.to_datetime(data['Date']).dt.year
-#data = data[['Ticker', 'Ending Price', 'Year']]
-#marketObject_2002 = MarketObject(data.loc[data['Year'] == 2002], 2002)
-#marketObject_2003 = MarketObject(data.loc[data['Year'] == 2003], 2003)
-#print('price of AOS in 2002 = ' + str(marketObject_2002.getPrice('AOS')))
-#print('price of AOS in 2003 = ' + str(marketObject_2003.getPrice('AOS')))
