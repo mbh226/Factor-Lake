@@ -4,7 +4,6 @@ from FactorFunction import Factors, Momentum6m, ROE, ROA
 from portfolio import Portfolio
 import pandas as pd
 import numpy as np
-
 def calculate_holdings(factor, aum, market):
     # Factor values for all tickers in the market
     factor_values = {ticker: factor.get(ticker, market) for ticker in market.stocks['Ticker']}
@@ -30,7 +29,7 @@ def calculate_holdings(factor, aum, market):
 
     return portfolio_new
 
-def calculate_growth(portfolio, next_market, current_market):
+def calculate_growth(portfolio, next_market, current_market, verbosity=None):
     # Calculate start value using the current market
     total_start_value = 0
     for factor_portfolio in portfolio:
@@ -43,45 +42,47 @@ def calculate_growth(portfolio, next_market, current_market):
             ticker = inv["ticker"]
             end_price = next_market.getPrice(ticker)
             if end_price is not None:
-                # Use next year's price for growth calculation
                 total_end_value += inv["number_of_shares"] * end_price
             else:
-                # Stock missing in next market, liquidate at entry price
                 entry_price = current_market.getPrice(ticker)
                 if entry_price is not None:
                     total_end_value += inv["number_of_shares"] * entry_price
-                    print(f"{ticker} - Missing in {next_market.t}, liquidating at entry price: {entry_price}")
+                    if verbosity == 3:
+                        print(f"{ticker} - Missing in {next_market.t}, liquidating at entry price: {entry_price}")
 
     # Calculate growth
     growth = (total_end_value - total_start_value) / total_start_value if total_start_value else 0
     return growth, total_start_value, total_end_value
 
-def rebalance_portfolio(data, factors, start_year, end_year, initial_aum):
+def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbosity=None):
     aum = initial_aum
     years = []
     portfolio_returns = []  # Store yearly returns for Information Ratio
     benchmark_returns = []  # Store benchmark returns for comparison
 
     for year in range(start_year, end_year):
-        print(f"\nRebalancing Portfolio for {year} based on factors...")
+
         market = MarketObject(data.loc[data['Year'] == year], year)
-        
         yearly_portfolio = []
+
         for factor in factors:
             factor_portfolio = calculate_holdings(
-            factor=factor,
-            aum=aum / len(factors),
-            market=market
+                factor=factor,
+                aum=aum / len(factors),
+                market=market
             )
             yearly_portfolio.append(factor_portfolio)
-        
+
         if year < end_year:
             next_market = MarketObject(data.loc[data['Year'] == year + 1], year + 1)
-            growth, total_start_value, total_end_value = calculate_growth(yearly_portfolio, next_market, market)
-            
-            print(f"Year {year} to {year + 1}: Growth: {growth:.2%}, Start Value: ${total_start_value:.2f}, End Value: ${total_end_value:.2f}")
+            growth, total_start_value, total_end_value = calculate_growth(yearly_portfolio, next_market, market, verbosity)
+
+            if verbosity >= 2:
+                print(f"Year {year} to {year + 1}: Growth: {growth:.2%}, "
+                      f"Start Value: ${total_start_value:.2f}, End Value: ${total_end_value:.2f}")
+
             aum = total_end_value  # Liquidate and reinvest
-            
+
             # Append annual return (growth) to portfolio_returns
             portfolio_returns.append(growth)
 
@@ -91,11 +92,22 @@ def rebalance_portfolio(data, factors, start_year, end_year, initial_aum):
 
         years.append(year)
 
-    # Calculate overall growth
-    overall_growth = (aum - initial_aum) / initial_aum if initial_aum else 0
-    print(f"\nFinal Portfolio Value after {end_year}: ${aum:.2f}")
-    print(f"Overall Growth from {start_year} to {end_year}: {overall_growth * 100:.2f}%")
-    
+    if verbosity >= 1:
+        print("\n==== Final Summary ====")
+        print(f"Initial Portfolio Value: ${initial_aum:.2f}")
+        # Calculate overall growth
+        overall_growth = (aum - initial_aum) / initial_aum if initial_aum else 0
+        print(f"Final Portfolio Value after {end_year}: ${aum:.2f}")
+        print(f"Overall Growth from {start_year} to {end_year}: {overall_growth * 100:.2f}%")
+        information_ratio = calculate_information_ratio(portfolio_returns, benchmark_returns, verbosity)
+    return {
+        'final_value': aum,
+        'yearly_returns': portfolio_returns,
+        'benchmark_returns': benchmark_returns,
+        'years': years
+    }
+
+
     # Calculate and print Information Ratio
     information_ratio = calculate_information_ratio(portfolio_returns, benchmark_returns)
     if information_ratio is not None:
@@ -118,7 +130,7 @@ def get_benchmark_return(year):
     }
     return benchmark_data.get(year, 0)
 
-def calculate_information_ratio(portfolio_returns, benchmark_returns):
+def calculate_information_ratio(portfolio_returns, benchmark_returns, verbosity = None):
     """
     Calculates the Information Ratio (IR) for a given set of portfolio returns and benchmark returns.
     
@@ -148,4 +160,8 @@ def calculate_information_ratio(portfolio_returns, benchmark_returns):
     
     # Compute Information Ratio
     information_ratio = mean_active_return / tracking_error
+    if verbosity >=1:
+        print(f"Information Ratio: {information_ratio:.4f}")
     return information_ratio
+   
+        
