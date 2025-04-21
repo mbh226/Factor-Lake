@@ -57,9 +57,9 @@ git push origin <branch you created in step 4>
 ### Diagram System Breakdown
 <details>
 <summary>Portfolio Use Case Diagram</summary>
-
-  ![Portfolio Use Case Diagram](./Diagrams/build_portfolio_use_case_042025.drawio.svg)
   <sub><i>This diagram explains how the developer and the portfolio manager interact with the system. The portfolio manager(s) primarily interact with Google Drive and Google Colab, while the developer manages both code and computation via Google Colab and GitHub. This diagram aids in identifying access points and roles therefore supporting secure coding and permission management. </i></sub>
+  ![Portfolio Use Case Diagram](./Diagrams/build_portfolio_use_case_042025.drawio.svg)
+  
 
 
 </details>
