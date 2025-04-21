@@ -55,12 +55,25 @@ git commit -m "Added new file and this is my descriptive message."
 git push origin <branch you created in step 4>
 ```
 ### Diagram System Breakdown
-####Portfolio Use Case Diagram
-![Portfolio Use Case Diagram](./Diagrams/build_portfolio_use_case_042025.drawio.svg)
-####Included Classes Diagram
+<details>
+<summary>Portfolio Use Case Diagram</summary>
+
+  ![Portfolio Use Case Diagram](./Diagrams/build_portfolio_use_case_042025.drawio.svg)
+
+</details>
+
+</details>
+<summary>Included Classes Diagram</summary>
 ![Class Diagram](./Diagrams/class_diagram_042025.drawio.svg)
-####Deployment Diagram
+
+</details>
+
+</details>
+<summary>Deployment Diagram</summary>
+
 ![Deployment Diagram](./diagrams/deployment_042025.drawio.svg)
+
+</details>
 
 ### SecDevOps Approach
 The Factor Lake team has agreed to take a SecDevOps approach to our project's development and all contributors are expected to do the same. SecDevOps is a software development approach that prioritizes security.[^1] All contributors must abide by Factor Lake's Secure Coding Standard.
