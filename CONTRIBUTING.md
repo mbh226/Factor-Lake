@@ -62,16 +62,17 @@ git push origin <branch you created in step 4>
 
 </details>
 
-</details>
-<summary>Included Classes Diagram</summary>
-![Class Diagram](./Diagrams/class_diagram_042025.drawio.svg)
+<details>
+<summary>Class Diagram</summary>
+
+  ![Class Diagram](./Diagrams/class_diagram_042025.drawio.svg)
 
 </details>
 
-</details>
+<details>
 <summary>Deployment Diagram</summary>
 
-![Deployment Diagram](./diagrams/deployment_042025.drawio.svg)
+  ![Deployment Diagram](./Diagrams/deployment_042025.drawio.svg)
 
 </details>
 
