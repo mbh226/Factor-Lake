@@ -1,8 +1,6 @@
-from MarketObject import MarketObject, load_data
-import pandas as pd
+from MarketObject import load_data
 
 load_data
-import numpy as np
 class Factors:
     def get(ticker, market):
         return "Factor not specified"

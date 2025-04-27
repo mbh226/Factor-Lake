@@ -1,5 +1,3 @@
-from MarketObject import MarketObject
-import pandas as pd
 
 class Portfolio:
     ### Initialize portfolio by providing a name and a list of investments ###

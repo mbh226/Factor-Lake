@@ -2,21 +2,21 @@ import FactorFunction
 
 def get_factors(available_factors):
     # Display the lists of available factors with index
-    print(f"\nAvailable factors: ")
+    print("\nAvailable factors: ")
     for i in range(len(available_factors)):
         print(f"{i + 1}. {available_factors[i]}")
     
     # Get the number of factors user wants to use
     while(True):
         try:
-            num = int(input(f"How many factors do you want to use?\n"))
+            num = int(input("How many factors do you want to use?\n"))
             if num > len(available_factors):
                 raise Exception
         except ValueError:
-            print(f"Please input an integer.")
+            print("Please input an integer.")
             continue
         except Exception:
-            print(f"Number is out of range.")
+            print("Number is out of range.")
             continue
         else:
             break
@@ -30,10 +30,10 @@ def get_factors(available_factors):
                 if selected_factor > len(available_factors):
                     raise Exception
             except ValueError:
-                print(f"Please input an integer.")
+                print("Please input an integer.")
                 continue
             except Exception:
-                print(f"Index is out of range.")
+                print("Index is out of range.")
                 continue
             else:
                 break

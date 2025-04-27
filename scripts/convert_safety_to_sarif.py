@@ -56,7 +56,7 @@ def convert_safety_to_sarif(safety_json, sarif_file, requirements_file):
         sys.exit(1)
 
     # we're looking at the requirements file
-    dependencies = load_requirements(requirements_file)
+    #dependencies = load_requirements(requirements_file)
 
     # just want to see the json data
     print("Safety JSON structure:", safety_data)

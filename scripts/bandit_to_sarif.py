@@ -26,7 +26,7 @@ def convert_bandit_to_sarif(bandit_json_path, sarif_output_path):
     }
 
     rules_seen = {}
-    results = []
+    #results = []
 
     for result in bandit_data.get("results", []):
         test_id = result.get("test_id", "UNKNOWN")

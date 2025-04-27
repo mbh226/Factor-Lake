@@ -1,8 +1,5 @@
-import matplotlib.pyplot as plt
 from MarketObject import MarketObject
-from FactorFunction import Factors, Momentum6m, ROE, ROA
 from portfolio import Portfolio
-import pandas as pd
 import numpy as np
 def calculate_holdings(factor, aum, market):
     # Factor values for all tickers in the market

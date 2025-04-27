@@ -1,5 +1,5 @@
-from FactorFunction import Factors, Momentum6m, ROE, ROA
-from MarketObject import MarketObject, load_data
+from FactorFunction import Momentum6m, ROE, ROA
+from MarketObject import load_data
 from CalculateHoldings import rebalance_portfolio
 import unittest
 import pandas as pd
