@@ -1,8 +1,4 @@
-###commenting this out to avoid conflicts in colab notebook - molly
-##from google.colab import drive
-##drive.mount('/content/drive')
 import pandas as pd
-import numpy as np
 ### CREATING FUNCTION TO LOAD DATA ###
 def load_data():
     file_path = '/content/drive/My Drive/Cayuga Fund Factor Lake/FR2000 Annual Quant Data FOR RETURN SIMULATION.xlsx'
@@ -42,7 +38,7 @@ class MarketObject():
         self.t = t
         self.verbosity = verbosity
 
-    def getPrice(self, ticker):
+    def get_price(self, ticker):
         ticker_data = self.stocks.loc[self.stocks['Ticker'] == ticker]
         if ticker_data.empty:
             if self.verbosity >= 2:

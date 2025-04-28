@@ -1,6 +1,3 @@
-from MarketObject import MarketObject
-import pandas as pd
-
 class Portfolio:
     ### Initialize portfolio by providing a name and a list of investments ###
     def __init__(self, name, investments=None):
@@ -25,7 +22,7 @@ class Portfolio:
     def present_value(self, market):
         total_value = 0
         for inv in self.investments:
-            price = market.getPrice(inv['ticker'])
+            price = market.get_price(inv['ticker'])
             if price is not None:
                 total_value += price * inv['number_of_shares']
         return total_value
@@ -37,4 +34,3 @@ class Portfolio:
         else:
             raise ValueError('Value at time 1 is 0')
 
-# NOTE: Example usage code was moved to main.py for execution.

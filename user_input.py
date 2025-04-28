@@ -1,22 +1,22 @@
-import FactorFunction
+import factor_function
 
 def get_factors(available_factors):
     # Display the lists of available factors with index
-    print(f"\nAvailable factors: ")
+    print("\nAvailable factors: ")
     for i in range(len(available_factors)):
         print(f"{i + 1}. {available_factors[i]}")
     
     # Get the number of factors user wants to use
     while(True):
         try:
-            num = int(input(f"How many factors do you want to use?\n"))
+            num = int(input("How many factors do you want to use?\n"))
             if num > len(available_factors):
                 raise Exception
         except ValueError:
-            print(f"Please input an integer.")
+            print("Please input an integer.")
             continue
         except Exception:
-            print(f"Number is out of range.")
+            print("Number is out of range.")
             continue
         else:
             break
@@ -30,45 +30,45 @@ def get_factors(available_factors):
                 if selected_factor > len(available_factors):
                     raise Exception
             except ValueError:
-                print(f"Please input an integer.")
+                print("Please input an integer.")
                 continue
             except Exception:
-                print(f"Index is out of range.")
+                print("Index is out of range.")
                 continue
             else:
                 break
         
         match available_factors[selected_factor - 1]:
             case "ROE using 9/30 Data":
-                factors.append(FactorFunction.ROE())
+                factors.append(factor_function.ROE())
             case "ROA using 9/30 Data":
-                factors.append(FactorFunction.ROA())
+                factors.append(factor_function.ROA())
             case "6-Mo Momentum %":
-                factors.append(FactorFunction.Momentum6m())
+                factors.append(factor_function.Momentum6m())
             case "12-Mo Momentum %":
-                factors.append(FactorFunction.Momentum12m())
+                factors.append(factor_function.Momentum12m())
             case "1-Mo Momentum %":
-                factors.append(FactorFunction.Momentum1m())
+                factors.append(factor_function.Momentum1m())
             case "Price to Book Using 9/30 Data":
-                factors.append(FactorFunction.P2B())
+                factors.append(factor_function.P2B())
             case "Next FY Earns/P":
-                factors.append(FactorFunction.NextFYrEarns())
+                factors.append(factor_function.NextFYrEarns())
             case "1-Yr Price Vol %":
-                factors.append(FactorFunction.OneYrPriceVol())
+                factors.append(factor_function.OneYrPriceVol())
             case "Accruals/Assets":
-                factors.append(FactorFunction.AccrualsAssets())
+                factors.append(factor_function.AccrualsAssets())
             case "ROA %":
-                factors.append(FactorFunction.ROAPercentage())
+                factors.append(factor_function.ROAPercentage())
             case "1-Yr Asset Growth %":
-                factors.append(FactorFunction.OneYrAssetGrowth())
+                factors.append(factor_function.OneYrAssetGrowth())
             case "1-Yr CapEX Growth %":
-                factors.append(FactorFunction.OneYrCapEXGrowth())
+                factors.append(factor_function.OneYrCapEXGrowth())
             case "Book/Price":
-                factors.append(FactorFunction.BookPrice())
+                factors.append(factor_function.BookPrice())
             case "Next-Year\'s Return %":
-                factors.append(FactorFunction.NextYrReturn())
+                factors.append(factor_function.NextYrReturn())
             case "Next-Year\'s Active Return %":
-                factors.append(FactorFunction.NextYrActiveReturn())    
+                factors.append(factor_function.NextYrActiveReturn())    
             case _:
                 print(f"factor {available_factors[selected_factor - 1]} is not available.")
     

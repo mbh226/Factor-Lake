@@ -1,10 +1,8 @@
-from MarketObject import load_data, MarketObject
-from portfolio import Portfolio
-from CalculateHoldings import rebalance_portfolio
-from UserInput import get_factors
-from VerbosityOptions import get_verbosity_level
+from market_object import load_data
+from calculate_holdings import rebalance_portfolio
+from user_input import get_factors
+from verbosity_options import get_verbosity_level
 import pandas as pd
-import numpy as np
 
 def main():
     ### Load market data ###
@@ -21,6 +19,8 @@ def main():
     verbosity_level = get_verbosity_level() 
     ### Rebalancing portfolio across years ###
     print("\nRebalancing portfolio...")
-    final_portfolio = rebalance_portfolio(rdata, factors, start_year=2002, end_year=2023, initial_aum=1,verbosity=verbosity_level)
+    
+    rebalance_portfolio(rdata, factors, start_year=2002, end_year=2023, initial_aum=1,verbosity=verbosity_level)
+
 if __name__ == "__main__":
     main()

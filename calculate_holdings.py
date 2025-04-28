@@ -1,8 +1,5 @@
-import matplotlib.pyplot as plt
-from MarketObject import MarketObject
-from FactorFunction import Factors, Momentum6m, ROE, ROA
+from market_object import MarketObject
 from portfolio import Portfolio
-import pandas as pd
 import numpy as np
 def calculate_holdings(factor, aum, market):
     # Factor values for all tickers in the market
@@ -22,7 +19,7 @@ def calculate_holdings(factor, aum, market):
     equal_investment = aum / len(top_10_percent)
 
     for ticker, _ in top_10_percent:
-        price = market.getPrice(ticker)
+        price = market.get_price(ticker)
         if price is not None and price > 0:
             shares = equal_investment / price
             portfolio_new.add_investment(ticker, shares)
@@ -40,11 +37,11 @@ def calculate_growth(portfolio, next_market, current_market, verbosity=None):
     for factor_portfolio in portfolio:
         for inv in factor_portfolio.investments:
             ticker = inv["ticker"]
-            end_price = next_market.getPrice(ticker)
+            end_price = next_market.get_price(ticker)
             if end_price is not None:
                 total_end_value += inv["number_of_shares"] * end_price
             else:
-                entry_price = current_market.getPrice(ticker)
+                entry_price = current_market.get_price(ticker)
                 if entry_price is not None:
                     total_end_value += inv["number_of_shares"] * entry_price
                     if verbosity == 3:
