@@ -1,6 +1,3 @@
-###commenting this out to avoid conflicts in colab notebook - molly
-##from google.colab import drive
-##drive.mount('/content/drive')
 import pandas as pd
 ### CREATING FUNCTION TO LOAD DATA ###
 def load_data():
@@ -41,7 +38,7 @@ class MarketObject():
         self.t = t
         self.verbosity = verbosity
 
-    def getPrice(self, ticker):
+    def get_price(self, ticker):
         ticker_data = self.stocks.loc[self.stocks['Ticker'] == ticker]
         if ticker_data.empty:
             if self.verbosity >= 2:

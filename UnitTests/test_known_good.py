@@ -1,6 +1,6 @@
-from FactorFunction import Momentum6m
-from MarketObject import load_data
-from CalculateHoldings import rebalance_portfolio
+from factor_function import Momentum6m
+from market_object import load_data
+from calculate_holdings import rebalance_portfolio
 import unittest
 import pandas as pd
 
