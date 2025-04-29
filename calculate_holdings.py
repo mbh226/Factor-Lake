@@ -1,5 +1,3 @@
-from market_object import MarketObject
-from portfolio import Portfolio
 import numpy as np
 def calculate_holdings(factor, aum, market):
     # Factor values for all tickers in the market
@@ -74,9 +72,9 @@ def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbos
             next_market = MarketObject(data.loc[data['Year'] == year + 1], year + 1)
             growth, total_start_value, total_end_value = calculate_growth(yearly_portfolio, next_market, market, verbosity)
 
-            if verbosity is not None and verbosity >= 2:
+            if verbosity >= 2:
                 print(f"Year {year} to {year + 1}: Growth: {growth:.2%}, "
-                f"Start Value: ${total_start_value:.2f}, End Value: ${total_end_value:.2f}")
+                      f"Start Value: ${total_start_value:.2f}, End Value: ${total_end_value:.2f}")
 
             aum = total_end_value  # Liquidate and reinvest
 
@@ -90,7 +88,6 @@ def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbos
         years.append(year)
 
     if verbosity >= 1:
-:
         print("\n==== Final Summary ====")
         print(f"Initial Portfolio Value: ${initial_aum:.2f}")
         # Calculate overall growth
