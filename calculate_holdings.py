@@ -74,7 +74,8 @@ def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbos
             next_market = MarketObject(data.loc[data['Year'] == year + 1], year + 1)
             growth, total_start_value, total_end_value = calculate_growth(yearly_portfolio, next_market, market, verbosity)
 
-            if verbosity >= 2:
+            if verbosity is not None and verbosity >= 2:
+:
                 print(f"Year {year} to {year + 1}: Growth: {growth:.2%}, "
                       f"Start Value: ${total_start_value:.2f}, End Value: ${total_end_value:.2f}")
 
