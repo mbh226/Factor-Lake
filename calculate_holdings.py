@@ -2,11 +2,12 @@ from market_object import MarketObject
 from portfolio import Portfolio
 import numpy as np
 def calculate_holdings(factor, aum, market):
-    # Factor values for all tickers in the market
-    factor_values = {ticker: factor.get(ticker, market) for ticker in market.stocks['Ticker']}
-    
-    # Remove None values from factor_values
-    factor_values = {ticker: value for ticker, value in factor_values.items() if value is not None}
+    # Access tickers directly from the index instead of the 'Ticker' column
+    factor_values = {
+        ticker: factor.get(ticker, market)
+        for ticker in market.stocks.index
+        if isinstance(factor.get(ticker, market), (int, float))  # Ensure scalar values
+    }
 
     # Sort securities by factor values in descending order
     sorted_securities = sorted(factor_values.items(), key=lambda x: x[1], reverse=True)
@@ -160,5 +161,3 @@ def calculate_information_ratio(portfolio_returns, benchmark_returns, verbosity 
     if verbosity >=1:
         print(f"Information Ratio: {information_ratio:.4f}")
     return information_ratio
-   
-        
