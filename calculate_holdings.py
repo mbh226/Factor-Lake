@@ -89,7 +89,8 @@ def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbos
 
         years.append(year)
 
-    if verbosity >= 1:
+    if if verbosity is not None and verbosity >= 1:
+:
         print("\n==== Final Summary ====")
         print(f"Initial Portfolio Value: ${initial_aum:.2f}")
         # Calculate overall growth
