@@ -22,6 +22,7 @@ def main():
             original_len = len(rdata)
             rdata = rdata[~rdata['FactSet Industry'].isin(excluded_industries)].copy()
             print(f"Filtered out {original_len - len(rdata)} fossil fuel-related companies.")
+            print(f"Fossil Fuel Keywords = ['oil', 'gas', 'coal', 'energy', 'fossil']")
         else:
             print("Warning: 'FactSet Industry' column not found. Cannot apply fossil fuel filter.")
 
