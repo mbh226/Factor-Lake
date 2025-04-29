@@ -1,8 +1,26 @@
 import pandas as pd
 ### CREATING FUNCTION TO LOAD DATA ###
-def load_data():
-    file_path = '/content/drive/My Drive/Cayuga Fund Factor Lake/FR2000 Annual Quant Data FOR RETURN SIMULATION.xlsx'
+import numpy as np
+
+def load_data(restrict_fossil_fuels=False):
+    file_path = 'C:\\Users\\FM\'s Laptop\\Downloads\\College\\SYSEN 5900-669\\Financial Portfoilio\\Clean output\\FR2000 Annual Quant Data FOR RETURN SIMULATION.xlsx'
     rdata = pd.read_excel(file_path, sheet_name='Data', header=2, skiprows=[3, 4])
+
+    rdata.columns = rdata.columns.str.strip()
+
+    if 'Ticker' not in rdata.columns and 'Ticker-Region' in rdata.columns:
+        rdata['Ticker'] = rdata['Ticker-Region'].dropna().apply(lambda x: x.split('-')[0].strip())
+
+    if restrict_fossil_fuels:
+        industry_col = 'FactSet Industry'
+        if industry_col in rdata.columns:
+            rdata[industry_col] = rdata[industry_col].astype(str).str.lower()
+            fossil_keywords = ['oil', 'gas', 'coal', 'energy', 'fossil']
+            mask = rdata[industry_col].apply(lambda x: not any(kw in x for kw in fossil_keywords))
+            rdata = rdata[mask]
+        else:
+            print("Warning: 'FactSet Industry' column not found. Fossil fuel filtering skipped.")
+
     return rdata
 
 class MarketObject():
