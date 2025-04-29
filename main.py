@@ -4,7 +4,6 @@ from user_input import get_factors
 from verbosity_options import get_verbosity_level
 from fossil_fuel_restriction import get_fossil_fuel_restriction
 import pandas as pd
-
 def main():
     ### Load market data ###
     print("Loading market data...")
@@ -34,7 +33,7 @@ def main():
     rdata = rdata[['Ticker', 'Ending Price', 'Year'] + available_factors]
     factors = get_factors(available_factors)
     verbosity_level = get_verbosity_level() 
-    ### Rebaslancing portfolio across years ###
+    ### Rebalancing portfolio across years ###
     print("\nRebalancing portfolio...")
     
     rebalance_portfolio(rdata, factors, start_year=2002, end_year=2023, initial_aum=1,verbosity=verbosity_level)
