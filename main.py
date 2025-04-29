@@ -2,7 +2,7 @@ from market_object import load_data
 from calculate_holdings import rebalance_portfolio
 from user_input import get_factors
 from verbosity_options import get_verbosity_level
-from fossil_fuel_restriction import get_fossil_fuel_restriction()
+from fossil_fuel_restriction import get_fossil_fuel_restriction
 import pandas as pd
 
 def main():
