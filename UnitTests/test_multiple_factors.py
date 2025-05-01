@@ -18,7 +18,7 @@ class TestFactorLakePortfolio(unittest.TestCase):
 
     def test_portfolio_growth(self):
         portfolio_values = rebalance_portfolio(self.data, self.factors, self.start_year, self.end_year, self.initial_aum)
-        final_aum = portfolio_values[-1]
+        final_aum = portfolio_values['final_value']
 
         self.assertAlmostEqual(
             final_aum,
