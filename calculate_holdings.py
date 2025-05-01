@@ -26,7 +26,7 @@ def calculate_holdings(factor, aum, market):
 
     return portfolio_new
 
-def calculate_growth(portfolio, next_market, current_market, verbosity=None):
+def calculate_growth(portfolio, next_market, current_market, verbosity=0):
     # Calculate start value using the current market
     total_start_value = 0
     for factor_portfolio in portfolio:
@@ -51,7 +51,7 @@ def calculate_growth(portfolio, next_market, current_market, verbosity=None):
     growth = (total_end_value - total_start_value) / total_start_value if total_start_value else 0
     return growth, total_start_value, total_end_value
 
-def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbosity=None):
+def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbosity=0):
     aum = initial_aum
     years = []
     portfolio_returns = []  # Store yearly returns for Information Ratio
@@ -74,7 +74,7 @@ def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbos
             next_market = MarketObject(data.loc[data['Year'] == year + 1], year + 1)
             growth, total_start_value, total_end_value = calculate_growth(yearly_portfolio, next_market, market, verbosity)
 
-            if verbosity >= 2:
+            if verbosity is not None and verbosity >= 2:
                 print(f"Year {year} to {year + 1}: Growth: {growth:.2%}, "
                       f"Start Value: ${total_start_value:.2f}, End Value: ${total_end_value:.2f}")
 
@@ -89,7 +89,8 @@ def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbos
 
         years.append(year)
 
-    if verbosity >= 1:
+    if verbosity is not None and verbosity >= 1:
+
         print("\n==== Final Summary ====")
         print(f"Initial Portfolio Value: ${initial_aum:.2f}")
         # Calculate overall growth
@@ -127,7 +128,7 @@ def get_benchmark_return(year):
     }
     return benchmark_data.get(year, 0)
 
-def calculate_information_ratio(portfolio_returns, benchmark_returns, verbosity = None):
+def calculate_information_ratio(portfolio_returns, benchmark_returns, verbosity = 0):
     """
     Calculates the Information Ratio (IR) for a given set of portfolio returns and benchmark returns.
     
