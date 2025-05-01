@@ -1,9 +1,36 @@
 import pandas as pd
+import numpy as np
+
 ### CREATING FUNCTION TO LOAD DATA ###
-def load_data():
+def load_data(restrict_fossil_fuels=False):
     file_path = '/content/drive/My Drive/Cayuga Fund Factor Lake/FR2000 Annual Quant Data FOR RETURN SIMULATION.xlsx'
     rdata = pd.read_excel(file_path, sheet_name='Data', header=2, skiprows=[3, 4])
+
+    # Strip whitespace from column names and remove duplicates
+    rdata.columns = rdata.columns.str.strip()
+    rdata = rdata.loc[:, ~rdata.columns.duplicated(keep='first')]
+
+    # Add 'Ticker' column if missing
+    if 'Ticker' not in rdata.columns and 'Ticker-Region' in rdata.columns:
+        rdata['Ticker'] = rdata['Ticker-Region'].str.split('-').str[0].str.strip()
+
+    # Apply sector restriction logic
+    if restrict_fossil_fuels:
+        industry_col = 'FactSet Industry'
+        if industry_col in rdata.columns:
+            rdata[industry_col] = rdata[industry_col].astype(str).str.lower()
+            fossil_keywords = ['oil', 'gas', 'coal', 'energy', 'fossil']
+            mask = rdata[industry_col].apply(lambda x: not any(kw in x for kw in fossil_keywords))
+            rdata = rdata[mask]
+        else:
+            print("Warning: 'FactSet Industry' column not found. Fossil fuel filtering skipped.")
+
+    # Ensure 'Year' column is present
+    if 'Year' not in rdata.columns and 'Date' in rdata.columns:
+        rdata['Year'] = pd.to_datetime(rdata['Date']).dt.year
+
     return rdata
+
 class MarketObject():
     def __init__(self, data, t, verbosity=1):
         """
