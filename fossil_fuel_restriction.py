@@ -5,4 +5,5 @@ def get_fossil_fuel_restriction():
         return True
     else:
         print("No fossil fuel restriction applied.")
+
         return False

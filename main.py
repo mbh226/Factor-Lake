@@ -4,7 +4,6 @@ from user_input import get_factors
 from verbosity_options import get_verbosity_level
 from fossil_fuel_restriction import get_fossil_fuel_restriction
 import pandas as pd
-
 def main():
     ### Load market data ###
     print("Loading market data...")
