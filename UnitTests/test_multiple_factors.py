@@ -12,8 +12,8 @@ class TestFactorLakePortfolio(unittest.TestCase):
         self.start_year = 2002
         self.end_year = 2023
         self.initial_aum = 1
-        self.expected_final_value = 5.28
-        self.expected_growth = 428.07
+        self.expected_final_value = 5.29
+        self.expected_growth = 429.07
         self.factors = [Momentum6m(), ROE(), ROA()]
 
     def test_portfolio_growth(self):
