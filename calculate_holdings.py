@@ -1,12 +1,23 @@
 from market_object import MarketObject
 from portfolio import Portfolio
 import numpy as np
-def calculate_holdings(factor, aum, market):
-    # Factor values for all tickers in the market
-    factor_values = {ticker: factor.get(ticker, market) for ticker in market.stocks['Ticker']}
-    
-    # Remove None values from factor_values
-    factor_values = {ticker: value for ticker, value in factor_values.items() if value is not None}
+import pandas as pd
+
+def calculate_holdings(factor, aum, market, restrict_fossil_fuels=False):
+    # Apply sector restrictions if enabled
+    if restrict_fossil_fuels:
+        industry_col = 'FactSet Industry'
+        if industry_col in market.stocks.columns:
+            fossil_keywords = ['oil', 'gas', 'coal', 'energy', 'fossil']
+            mask = market.stocks[industry_col].str.lower().apply(lambda x: not any(kw in x for kw in fossil_keywords) if pd.notna(x) else True)
+            market.stocks = market.stocks[mask]
+
+    # Access tickers directly from the index instead of the 'Ticker' column
+    factor_values = {
+        ticker: factor.get(ticker, market)
+        for ticker in market.stocks.index
+        if isinstance(factor.get(ticker, market), (int, float))  # Ensure scalar values
+    }
 
     # Sort securities by factor values in descending order
     sorted_securities = sorted(factor_values.items(), key=lambda x: x[1], reverse=True)
@@ -51,7 +62,8 @@ def calculate_growth(portfolio, next_market, current_market, verbosity=0):
     growth = (total_end_value - total_start_value) / total_start_value if total_start_value else 0
     return growth, total_start_value, total_end_value
 
-def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbosity=0):
+
+def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbosity=None, restrict_fossil_fuels=False):
     aum = initial_aum
     years = []
     portfolio_returns = []  # Store yearly returns for Information Ratio
@@ -66,7 +78,8 @@ def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbos
             factor_portfolio = calculate_holdings(
                 factor=factor,
                 aum=aum / len(factors),
-                market=market
+                market=market,
+                restrict_fossil_fuels=restrict_fossil_fuels
             )
             yearly_portfolio.append(factor_portfolio)
 
@@ -98,13 +111,13 @@ def rebalance_portfolio(data, factors, start_year, end_year, initial_aum, verbos
         print(f"Final Portfolio Value after {end_year}: ${aum:.2f}")
         print(f"Overall Growth from {start_year} to {end_year}: {overall_growth * 100:.2f}%")
         information_ratio = calculate_information_ratio(portfolio_returns, benchmark_returns, verbosity)
+    
     return {
         'final_value': aum,
         'yearly_returns': portfolio_returns,
         'benchmark_returns': benchmark_returns,
         'years': years
     }
-
 
     # Calculate and print Information Ratio
     information_ratio = calculate_information_ratio(portfolio_returns, benchmark_returns)
@@ -161,5 +174,3 @@ def calculate_information_ratio(portfolio_returns, benchmark_returns, verbosity 
     if verbosity >=1:
         print(f"Information Ratio: {information_ratio:.4f}")
     return information_ratio
-   
-        

@@ -10,7 +10,7 @@ def main():
     rdata = load_data()
     
     ### Optional: Filter out fossil fuel-related industries ###
-    restrict_fossil_fuels = get_fossil_fuel_restriction()  # already defined in your code
+    restrict_fossil_fuels = get_fossil_fuel_restriction()  # Prompt user for restriction
     if restrict_fossil_fuels:
         excluded_industries = [
             "Integrated Oil",
@@ -33,10 +33,10 @@ def main():
     rdata = rdata[['Ticker', 'Ending Price', 'Year'] + available_factors]
     factors = get_factors(available_factors)
     verbosity_level = get_verbosity_level() 
+
     ### Rebalancing portfolio across years ###
     print("\nRebalancing portfolio...")
-    
-    rebalance_portfolio(rdata, factors, start_year=2002, end_year=2023, initial_aum=1,verbosity=verbosity_level)
+    rebalance_portfolio(rdata, factors, start_year=2002, end_year=2023, initial_aum=1, verbosity=verbosity_level)
 
 if __name__ == "__main__":
     main()
